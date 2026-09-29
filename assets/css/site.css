@@ -603,7 +603,7 @@ a.review__src:hover .ph { transform: translate(2px, -2px); }
    --mq-duration: tempo de uma volta · --mq-fade: quanto das bordas desbota (padrão Spell UI: 10%) */
 .brands { background: var(--navy); color: var(--on-dark); padding: 0; overflow: clip; }
 .mq {
-  --mq-duration: 40s; --mq-fade: 10%; --mq-gap: 44px;
+  --mq-duration: 110s; --mq-fade: 10%; --mq-gap: 44px;
   display: flex; overflow: hidden; user-select: none; padding: 16px 0;
   -webkit-mask: linear-gradient(90deg, transparent, #000 var(--mq-fade), #000 calc(100% - var(--mq-fade)), transparent);
           mask: linear-gradient(90deg, transparent, #000 var(--mq-fade), #000 calc(100% - var(--mq-fade)), transparent);
