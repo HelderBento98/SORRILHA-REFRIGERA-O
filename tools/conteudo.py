@@ -221,7 +221,7 @@ SERVICOS = [
     {
         "slug": "maquina-de-lavar",
         "nome": "Máquina de lavar",
-        "icone": "washing-machine",
+        "icone": "wash",
         "resumo": "Conserto e limpeza completa de máquina de lavar roupas.",
         "title": "Conserto de Máquina de Lavar em Sertãozinho | Sorrilha",
         "description": ("Conserto e limpeza de máquina de lavar em Sertãozinho - SP: não centrifuga, vaza água, não liga "

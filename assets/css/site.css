@@ -520,7 +520,9 @@ svg.ico { width: 1em; height: 1em; display: inline-block; vertical-align: -.125e
   .svc__link:hover .ph-snowflake,        .svc__link:focus-visible .ph-snowflake        { animation: ico-spin-slow .9s var(--ease) both; }
   .svc__link:hover .ico-fridge,          .svc__link:focus-visible .ico-fridge          { animation: ico-shiver .5s ease-in-out 2; }
   .svc__link:hover .ph-thermometer-cold, .svc__link:focus-visible .ph-thermometer-cold { animation: ico-bob .7s var(--ease) 2; }
-  .svc__link:hover .ph-washing-machine,  .svc__link:focus-visible .ph-washing-machine  { animation: ico-spin 1s cubic-bezier(.5, 0, .2, 1) both; }
+  /* máquina de lavar: só o tambor gira, balança para os lados e depois centrifuga */
+  .ico-wash__drum { transform-box: fill-box; transform-origin: center; }
+  .svc__link:hover .ico-wash__drum,      .svc__link:focus-visible .ico-wash__drum      { animation: ico-drum 1.6s cubic-bezier(.45, 0, .2, 1) both; }
   .svc__link:hover .ph-oven,             .svc__link:focus-visible .ph-oven             { animation: ico-heat .8s ease-in-out 2; }
   .svc__link:hover .ph-wrench,           .svc__link:focus-visible .ph-wrench           { animation: ico-tighten .8s var(--ease) both; }
 
@@ -528,7 +530,13 @@ svg.ico { width: 1em; height: 1em; display: inline-block; vertical-align: -.125e
   .svc__link:hover .ico-fridge__h1, .svc__link:hover .ico-fridge__h2 { animation: ico-handle .5s ease-in-out 2; }
 
   @keyframes ico-spin-slow { to { transform: rotate(180deg); } }
-  @keyframes ico-spin { to { transform: rotate(360deg); } }
+  @keyframes ico-drum {
+    0%   { transform: rotate(0); }
+    15%  { transform: rotate(-70deg); }
+    30%  { transform: rotate(40deg); }
+    45%  { transform: rotate(-30deg); }
+    100% { transform: rotate(720deg); }
+  }
   @keyframes ico-shiver {
     0%, 100% { transform: translateX(0); }
     20% { transform: translateX(-2px) rotate(-3deg); }

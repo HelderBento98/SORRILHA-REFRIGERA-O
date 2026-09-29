@@ -12,7 +12,6 @@ paper-plane-tilt
 phone
 snowflake
 thermometer-cold
-washing-machine
 whatsapp-logo
 wrench
 x
