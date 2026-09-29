@@ -37,6 +37,11 @@ DEPOIMENTOS = []
 # Link para o perfil no Google (aparece junto dos depoimentos). Deixe "" se não tiver.
 GOOGLE_PERFIL = ""
 
+# Nota média e total de avaliações que aparecem no perfil do Google (ex.: "4,9" e 37).
+# Deixe "" e 0 para esconder a nota.
+GOOGLE_NOTA = ""
+GOOGLE_TOTAL = 0
+
 # ---------------------------------------------------------------------------
 # MARCAS ATENDIDAS (nomes em texto)
 # ---------------------------------------------------------------------------

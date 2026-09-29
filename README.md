@@ -23,7 +23,7 @@ python3 tools/build.py      # gera todas as páginas, sitemap.xml e robots.txt
 python3 tools/icones.py     # só se usar um ícone novo
 ```
 
-- **Depoimentos do Google:** cole na lista `DEPOIMENTOS` em `tools/conteudo.py`. Com a lista vazia, a seção não aparece.
+- **Avaliações do Google:** cole cada avaliação na lista `DEPOIMENTOS` em `tools/conteudo.py` (nome, estrelas, texto, quando). Preencha também `GOOGLE_PERFIL` (link do perfil), `GOOGLE_NOTA` e `GOOGLE_TOTAL`. Com a lista vazia, a seção não aparece. Os cards ficam logo depois de Serviços.
 - **Domínio próprio:** troque `SITE_URL` em `tools/conteudo.py` e gere de novo.
 - **Visual:** `assets/css/site.css` (cores no topo do arquivo).
 

@@ -15,7 +15,7 @@ from urllib.parse import quote
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from conteudo import (EMPRESA, SITE_URL, DEPOIMENTOS, GOOGLE_PERFIL, MARCAS_TODAS, INICIO,  # noqa: E402
+from conteudo import (EMPRESA, SITE_URL, DEPOIMENTOS, GOOGLE_PERFIL, GOOGLE_NOTA, GOOGLE_TOTAL, MARCAS_TODAS, INICIO,  # noqa: E402
                       SERVICOS, OPCOES_FORM, OPCAO_POR_SERVICO)
 
 E = EMPRESA
@@ -263,35 +263,52 @@ def faixa_marcas():
     </section>""".format(i=itens)
 
 
-def depoimentos():
-    if not DEPOIMENTOS:
+def depoimentos(lista=None, perfil=None):
+    """Cards de avaliações do Google. Com a lista vazia, a seção não aparece."""
+    lista = DEPOIMENTOS if lista is None else lista
+    perfil = GOOGLE_PERFIL if perfil is None else perfil
+    if not lista:
         return ""
     cards = []
-    for d in DEPOIMENTOS:
-        n = int(d.get("estrelas", 5))
-        estrelas = "★" * n + "☆" * (5 - n)
+    for d in lista:
+        n = max(1, min(5, int(d.get("estrelas", 5))))
+        nome = d["nome"].strip()
+        inicial = escape(nome[:1].upper())
         cards.append("""
-          <figure class="review reveal">
-            <div class="review__stars" aria-label="{n} de 5 estrelas">{e}</div>
+          <li class="review">
+            <div class="review__top">
+              <span class="review__avatar" aria-hidden="true">{ini}</span>
+              <span class="review__who"><strong>{nome}</strong><small>{q}</small></span>
+            </div>
+            <div class="review__stars" role="img" aria-label="{n} de 5 estrelas"><span>{cheias}</span><span class="review__off">{vazias}</span></div>
             <blockquote>{t}</blockquote>
-            <figcaption><strong>{nome}</strong><span>Avaliação no Google{q}</span></figcaption>
-          </figure>""".format(n=n, e=estrelas, t=escape(d["texto"]), nome=escape(d["nome"]),
-                               q=(" · " + escape(d["quando"])) if d.get("quando") else ""))
-    link = ('<a class="link-arrow" %s>Ver todas no Google %s</a>' % (ext(GOOGLE_PERFIL), ic("arrow-up-right"))) if GOOGLE_PERFIL else ""
+            <p class="review__src">Avaliação no Google</p>
+          </li>""".format(ini=inicial, nome=escape(nome), q=escape(d.get("quando", "")), n=n,
+                           cheias="★" * n, vazias="★" * (5 - n), t=escape(d["texto"])))
+    link = ('<a class="btn btn--ghost" %s>Ver no Google %s</a>' % (ext(perfil), ic("arrow-up-right"))) if perfil else ""
+    nota = ""
+    if GOOGLE_NOTA and GOOGLE_TOTAL:
+        nota = ('<span class="rating__n">%s</span><span class="rating__meta"><span class="rating__stars" aria-hidden="true">★★★★★</span>'
+                '<small>%d avaliações no Google</small></span>') % (escape(str(GOOGLE_NOTA)), int(GOOGLE_TOTAL))
     return """
     <section class="section section--soft" id="avaliacoes" aria-labelledby="av-t">
       <div class="wrap">
         <div class="section__head section__head--row reveal">
           <div>
-            <p class="eyebrow">Avaliações</p>
-            <h2 id="av-t">O que dizem os clientes</h2>
+            <p class="eyebrow">Avaliações no Google</p>
+            <h2 id="av-t">Quem já chamou a Sorrilha</h2>
           </div>
-          {link}
-        </div>
-        <div class="reviews">{cards}
+          <div class="rating">
+            {nota}
+            {link}
+          </div>
         </div>
       </div>
-    </section>""".format(link=link, cards="".join(cards))
+      <div class="reviews-rail reveal">
+        <ul class="reviews" tabindex="0" aria-label="Avaliações de clientes">{cards}
+        </ul>
+      </div>
+    </section>""".format(nota=nota, link=link, cards="".join(cards))
 
 
 def faq_html(faq, titulo="Dúvidas frequentes", sid="duvidas"):
@@ -477,6 +494,7 @@ def pagina_inicio():
         </ul>
       </div>
     </section>
+{depo}
 
     <section class="section section--flush-top" id="casa-e-comercio" aria-label="Casa e comércio">
       <div class="wrap duo">
@@ -509,7 +527,6 @@ def pagina_inicio():
         </ol>
       </div>
     </section>
-{depo}
 {faq}
 {contato}
   </main>
