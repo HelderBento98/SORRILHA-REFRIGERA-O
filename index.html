@@ -56,7 +56,7 @@
         <a href="#servicos">Serviços</a>
         <a href="#comercios">Para comércios</a>
         <a href="#como-funciona">Como funciona</a>
-        <a href="#contato">Contato</a>
+        <a href="#contato">Fale conosco</a>
         <a class="btn btn--primary btn--sm nav__cta" href="https://wa.me/5575999062183?text=Ol%C3%A1%2C%20Gabriel%21%20Vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento." target="_blank" rel="noopener">
           <i class="ph ph-whatsapp-logo" aria-hidden="true"></i> Chamar no WhatsApp
         </a>
@@ -183,6 +183,40 @@
       </div>
     </section>
 
+    <!-- ============ MARCAS ============ -->
+    <section class="brands" id="marcas" aria-labelledby="marcas-titulo">
+      <div class="wrap">
+        <div class="brands__head reveal">
+          <p class="eyebrow">Marcas</p>
+          <h2 id="marcas-titulo">Atendemos todas as marcas.</h2>
+          <p class="brands__note">Assistência técnica independente. Não somos assistência autorizada dos fabricantes.</p>
+        </div>
+        <div class="brands__groups">
+          <div class="brands__group reveal">
+            <h3><i class="ph ph-snowflake" aria-hidden="true"></i> Ar-condicionado</h3>
+            <ul>
+              <li>Samsung</li><li>LG</li><li>Midea</li><li>Springer</li><li>Gree</li><li>Elgin</li>
+              <li>Daikin</li><li>Fujitsu</li><li>Carrier</li><li>Consul</li><li>Philco</li><li>Agratto</li>
+            </ul>
+          </div>
+          <div class="brands__group reveal">
+            <h3><i class="ph ph-thermometer-cold" aria-hidden="true"></i> Geladeiras e freezers</h3>
+            <ul>
+              <li>Brastemp</li><li>Consul</li><li>Electrolux</li><li>Samsung</li><li>LG</li>
+              <li>Panasonic</li><li>Midea</li><li>Esmaltec</li><li>Metalfrio</li><li>Gelopar</li>
+            </ul>
+          </div>
+          <div class="brands__group reveal">
+            <h3><i class="ph ph-oven" aria-hidden="true"></i> Fogões</h3>
+            <ul>
+              <li>Brastemp</li><li>Consul</li><li>Electrolux</li><li>Atlas</li>
+              <li>Esmaltec</li><li>Mueller</li><li>Dako</li><li>Continental</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ COMÉRCIOS / CÂMARA FRIA ============ -->
     <section class="section section--dark" id="comercios">
       <div class="wrap split">
@@ -239,18 +273,55 @@
       </div>
     </section>
 
-    <!-- ============ CONTATO ============ -->
-    <section class="contact" id="contato">
-      <div class="wrap contact__inner reveal">
-        <img class="contact__mark" src="assets/img/mark.png" alt="" width="240" height="200" loading="lazy" decoding="async">
-        <div class="contact__copy">
-          <p class="eyebrow eyebrow--light">Atendimento em Sertãozinho - SP</p>
-          <h2>Precisa de um técnico? Fale direto com o Gabriel.</h2>
+    <!-- ============ FALE CONOSCO ============ -->
+    <section class="contact" id="contato" aria-labelledby="contato-titulo">
+      <div class="wrap contact__grid">
+        <div class="contact__copy reveal">
+          <p class="eyebrow eyebrow--light">Fale conosco</p>
+          <h2 id="contato-titulo">Conte o problema. A resposta chega no seu WhatsApp.</h2>
+          <p class="contact__lead">Preencha o formulário e toque em enviar. O WhatsApp abre com a sua mensagem pronta para o Gabriel, é só confirmar.</p>
+          <p class="contact__or">Prefere ligar?</p>
           <a class="contact__phone" href="tel:+5575999062183"><i class="ph ph-phone" aria-hidden="true"></i> (75) 99906-2183</a>
         </div>
-        <a class="btn btn--primary btn--lg" href="https://wa.me/5575999062183?text=Ol%C3%A1%2C%20Gabriel%21%20Vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento." target="_blank" rel="noopener">
-          <i class="ph ph-whatsapp-logo" aria-hidden="true"></i> Chamar no WhatsApp
-        </a>
+
+        <!-- Sem JavaScript, o formulário envia só a descrição (campo "text") direto para o wa.me.
+             Com JavaScript, o script abaixo junta todos os campos numa mensagem só. -->
+        <form class="form reveal" id="form-contato" action="https://wa.me/5575999062183" method="get" target="_blank">
+          <div class="form__row">
+            <div class="field">
+              <label for="f-nome">Seu nome</label>
+              <input id="f-nome" type="text" autocomplete="name" placeholder="Ex.: Maria">
+            </div>
+            <div class="field">
+              <label for="f-bairro">Bairro ou cidade</label>
+              <input id="f-bairro" type="text" autocomplete="address-level2" placeholder="Ex.: Centro, Sertãozinho">
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-servico">Tipo de serviço</label>
+            <div class="select">
+              <select id="f-servico">
+                <option>Ar-condicionado</option>
+                <option>Câmara fria</option>
+                <option>Geladeira ou freezer</option>
+                <option>Máquina de lavar</option>
+                <option>Fogão</option>
+                <option>Tomada, lustre ou parte elétrica</option>
+                <option>Encanamento ou vazamento</option>
+                <option>Outro</option>
+              </select>
+              <i class="ph ph-caret-down" aria-hidden="true"></i>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-problema">Descreva o problema</label>
+            <textarea id="f-problema" name="text" rows="4" required minlength="8" placeholder="Ex.: Ar-condicionado Samsung 12.000 BTUs pingando água dentro do quarto."></textarea>
+            <p class="field__help">Marca, modelo e o que está acontecendo ajudam no orçamento.</p>
+          </div>
+          <button class="btn btn--primary btn--lg form__submit" type="submit">
+            <i class="ph ph-whatsapp-logo" aria-hidden="true"></i> Enviar pelo WhatsApp
+          </button>
+        </form>
       </div>
     </section>
   </main>
@@ -268,5 +339,19 @@
     <i class="ph ph-whatsapp-logo" aria-hidden="true"></i>
   </a>
 
+  <!-- Junta os campos do "Fale conosco" numa mensagem só e abre o WhatsApp.
+       Se o navegador não rodar este script, o formulário continua funcionando (envia a descrição). -->
+  <script>
+    document.getElementById('form-contato').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var v = function (id) { return document.getElementById(id).value.trim(); };
+      var linhas = ['Olá, Gabriel! Vim pelo site.'];
+      if (v('f-nome')) linhas.push('Nome: ' + v('f-nome'));
+      if (v('f-bairro')) linhas.push('Bairro/cidade: ' + v('f-bairro'));
+      linhas.push('Serviço: ' + v('f-servico'));
+      linhas.push('Problema: ' + v('f-problema'));
+      window.open('https://wa.me/5575999062183?text=' + encodeURIComponent(linhas.join('\n')), '_blank', 'noopener');
+    });
+  </script>
 </body>
 </html>
