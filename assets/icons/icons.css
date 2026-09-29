@@ -1,6 +1,7 @@
 /* Phosphor Icons (MIT) - subconjunto so com os icones usados no site. */
 @font-face{font-family:"Phosphor";src:url("phosphor-subset.woff2") format("woff2");font-weight:normal;font-style:normal;font-display:block}
 .ph{font-family:"Phosphor"!important;speak:never;font-style:normal;font-weight:normal;font-variant:normal;text-transform:none;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;display:inline-block}
+.ph.ph-arrow-down:before{content:"\e03e"}
 .ph.ph-arrow-right:before{content:"\e06c"}
 .ph.ph-calendar-check:before{content:"\e712"}
 .ph.ph-chat-circle-text:before{content:"\e16e"}
