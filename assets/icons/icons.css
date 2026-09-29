@@ -1,26 +1,21 @@
-/* Phosphor Icons (MIT) - subconjunto so com os icones usados no site. */
+/* Phosphor Icons (MIT) - subconjunto so com os icones usados no site. Gerado por tools/icones.py */
 @font-face{font-family:"Phosphor";src:url("phosphor-subset.woff2") format("woff2");font-weight:normal;font-style:normal;font-display:block}
 .ph{font-family:"Phosphor"!important;speak:never;font-style:normal;font-weight:normal;font-variant:normal;text-transform:none;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;display:inline-block}
-.ph.ph-arrow-down:before{content:"\e03e"}
 .ph.ph-arrow-right:before{content:"\e06c"}
-.ph.ph-calendar-check:before{content:"\e712"}
+.ph.ph-arrow-up-right:before{content:"\e092"}
 .ph.ph-caret-down:before{content:"\e136"}
-.ph.ph-chat-circle-text:before{content:"\e16e"}
+.ph.ph-caret-right:before{content:"\e13a"}
 .ph.ph-check:before{content:"\e182"}
-.ph.ph-drop:before{content:"\e210"}
-.ph.ph-hammer:before{content:"\e80e"}
-.ph.ph-house:before{content:"\e2c2"}
-.ph.ph-lightbulb:before{content:"\e2dc"}
+.ph.ph-check-circle:before{content:"\e184"}
+.ph.ph-instagram-logo:before{content:"\e2d0"}
 .ph.ph-list:before{content:"\e2f0"}
 .ph.ph-map-pin:before{content:"\e316"}
 .ph.ph-oven:before{content:"\ed8c"}
+.ph.ph-paper-plane-tilt:before{content:"\e398"}
 .ph.ph-phone:before{content:"\e3b8"}
-.ph.ph-pipe:before{content:"\ed86"}
-.ph.ph-plug:before{content:"\e946"}
 .ph.ph-snowflake:before{content:"\e5aa"}
 .ph.ph-storefront:before{content:"\e470"}
 .ph.ph-thermometer-cold:before{content:"\e5c8"}
-.ph.ph-toolbox:before{content:"\eca0"}
 .ph.ph-washing-machine:before{content:"\ede8"}
 .ph.ph-whatsapp-logo:before{content:"\e5d0"}
 .ph.ph-wrench:before{content:"\e5d4"}
