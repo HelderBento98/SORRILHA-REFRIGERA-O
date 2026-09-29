@@ -503,3 +503,4 @@ a.channel:hover .channel__arr { transform: translate(3px, -3px); }
 
 /* sem a faixa de marcas, a onda do topo termina no branco da seção seguinte */
 .waves__blue { fill: var(--bg); }
+.section--flush-top { padding-top: 0; }

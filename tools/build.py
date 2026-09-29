@@ -423,13 +423,6 @@ def pagina_inicio():
           </li>""".format(slug=s["slug"], icone=ic(s["icone"]), nome=escape(s["nome"]), resumo=escape(s["resumo"]),
                           arr=ic("arrow-right")) for s in SERVICOS)
 
-    # problemas comuns: dois de cada serviço, cada um abre o WhatsApp com a mensagem pronta
-    chips = []
-    for s in SERVICOS:
-        for p in s["problemas"][:2]:
-            msg = "Olá, Gabriel! Vim pelo site. %s: %s." % (s["nome"], p.lower())
-            chips.append('<li><a class="chip" %s><small>%s</small>%s</a></li>' % (ext(wa(msg)), escape(s["nome"]), escape(p)))
-
     corpo = """
   <main id="conteudo">
     <section class="hero">
@@ -457,32 +450,16 @@ def pagina_inicio():
 
     <section class="section" id="servicos" aria-labelledby="servicos-t">
       <div class="wrap">
-        <div class="section__head section__head--row reveal">
-          <div>
-            <p class="eyebrow">Serviços</p>
-            <h2 id="servicos-t">O que a Sorrilha faz por você</h2>
-          </div>
-          <p class="section__sub">Refrigeração é a especialidade. Na mesma visita, também dá para resolver a tomada, o lustre e o vazamento.</p>
+        <div class="section__head reveal">
+          <p class="eyebrow">Serviços</p>
+          <h2 id="servicos-t">O que a Sorrilha faz por você</h2>
         </div>
         <ul class="svcs">{servicos}
         </ul>
       </div>
     </section>
 
-    <section class="section section--soft" id="problemas" aria-labelledby="problemas-t">
-      <div class="wrap">
-        <div class="section__head reveal">
-          <p class="eyebrow">Problemas comuns</p>
-          <h2 id="problemas-t">Seu aparelho está assim?</h2>
-          <p class="section__sub">Toque no problema e a mensagem já vai pronta para o WhatsApp.</p>
-        </div>
-        <ul class="chips reveal">
-          {chips}
-        </ul>
-      </div>
-    </section>
-
-    <section class="section" id="casa-e-comercio" aria-label="Casa e comércio">
+    <section class="section section--flush-top" id="casa-e-comercio" aria-label="Casa e comércio">
       <div class="wrap duo">
         <article class="duo__card reveal">
           <p class="eyebrow">Para sua casa</p>
@@ -521,7 +498,7 @@ def pagina_inicio():
            ic_ok=ic("check-circle"), wa=ext(wa("Olá, Gabriel! Vim pelo site e gostaria de um orçamento.")),
            ic_wa=ic("whatsapp-logo"), form=formulario("f-inicio", titulo="Peça seu orçamento",
                                                       sub="Preencha e envie pelo WhatsApp."),
-           ondas=faixa_ondas(), servicos=servicos, chips="\n          ".join(chips),
+           ondas=faixa_ondas(), servicos=servicos,
            arr=ic("arrow-right"), depo=depoimentos(), faq=faq_html(I["faq"]), contato=contato(R))
 
     html = head(I["title"], I["description"], "", R, [ld_empresa(), ld_faq(I["faq"])],
