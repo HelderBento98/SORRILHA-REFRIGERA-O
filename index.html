@@ -229,7 +229,7 @@
       <div class="carousel reveal">
         <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Avaliação anterior" hidden><i class="ph ph-arrow-left" aria-hidden="true"></i></button>
         <ul class="reviews" tabindex="0" aria-label="Avaliações de clientes">
-          <li class="review">
+          <li class="review review--c0">
             <div class="review__top">
               <span class="review__avatar" aria-hidden="true">M</span>
               <span class="review__who"><strong>Manuel H.</strong><small>há 3 meses</small></span>
@@ -238,16 +238,16 @@
             <blockquote>Muito bom. Fez o concerto da máquina de lavar ficou top. Muito prestativo, recomendo.</blockquote>
             <a class="review__src" href="https://www.google.com/maps/contrib/110952830723655940270/reviews?hl=pt-BR" target="_blank" rel="noopener">Ver avaliação no Google <i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>
           </li>
-          <li class="review">
+          <li class="review review--c1">
             <div class="review__top">
-              <span class="review__avatar" aria-hidden="true">A</span>
-              <span class="review__who"><strong>Andra B.</strong><small>há 3 meses</small></span>
+              <span class="review__avatar" aria-hidden="true">S</span>
+              <span class="review__who"><strong>Sandra B.</strong><small>há 3 meses</small></span>
             </div>
             <div class="review__stars" role="img" aria-label="5 de 5 estrelas"><span>★★★★★</span><span class="review__off"></span></div>
             <blockquote>Prestam um ótimo atendimento, são honestos com os clientes, e isso é um grande diferencial, podem confiar!</blockquote>
             <a class="review__src" href="https://www.google.com/maps/contrib/114087981476000836882/reviews?hl=pt-BR" target="_blank" rel="noopener">Ver avaliação no Google <i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>
           </li>
-          <li class="review">
+          <li class="review review--c2">
             <div class="review__top">
               <span class="review__avatar" aria-hidden="true">T</span>
               <span class="review__who"><strong>Tainá L.</strong><small>há 3 meses</small></span>
@@ -256,7 +256,7 @@
             <blockquote>Muito bom profissional, atendimento excelente.</blockquote>
             <a class="review__src" href="https://www.google.com/maps/contrib/117794246307687388836/reviews?hl=pt-BR" target="_blank" rel="noopener">Ver avaliação no Google <i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>
           </li>
-          <li class="review">
+          <li class="review review--c0">
             <div class="review__top">
               <span class="review__avatar" aria-hidden="true">A</span>
               <span class="review__who"><strong>Amariuldo S.</strong><small>há 2 semanas</small></span>
@@ -265,7 +265,7 @@
             <blockquote>Muito bom exelente</blockquote>
             <a class="review__src" href="https://www.google.com/maps/contrib/100359409370315906318/reviews?hl=pt-BR" target="_blank" rel="noopener">Ver avaliação no Google <i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>
           </li>
-          <li class="review">
+          <li class="review review--c1">
             <div class="review__top">
               <span class="review__avatar" aria-hidden="true">Q</span>
               <span class="review__who"><strong>Quezia F.</strong><small>há 2 meses</small></span>
@@ -274,7 +274,7 @@
             <blockquote>Excelente profissional e ótimo atendimento.</blockquote>
             <a class="review__src" href="https://www.google.com/maps/contrib/115886534326477653508/reviews?hl=pt-BR" target="_blank" rel="noopener">Ver avaliação no Google <i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>
           </li>
-          <li class="review">
+          <li class="review review--c2">
             <div class="review__top">
               <span class="review__avatar" aria-hidden="true">P</span>
               <span class="review__who"><strong>Pri R.</strong><small>há 2 meses</small></span>
@@ -283,7 +283,7 @@
             <blockquote>Ótimo serviço!!!!! Indico</blockquote>
             <a class="review__src" href="https://www.google.com/maps/contrib/107708286854145130605/reviews?hl=pt-BR" target="_blank" rel="noopener">Ver avaliação no Google <i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>
           </li>
-          <li class="review">
+          <li class="review review--c0">
             <div class="review__top">
               <span class="review__avatar" aria-hidden="true">E</span>
               <span class="review__who"><strong>Eduardo B.</strong><small>há 3 meses</small></span>
@@ -297,20 +297,41 @@
       </div>
     </section>
     <script>
-      /* Carrossel: centraliza um card, deixa os das bordas transparentes e liga as setas.
+      /* Carrossel em loop: centraliza um card, deixa os das bordas transparentes e liga as setas.
+         O script copia os cards antes e depois da lista, para sempre haver um card de cada lado;
+         ao chegar numa cópia, volta sem animação para o card original equivalente.
          Sem script, os cards continuam deslizando com o dedo ou a barra de rolagem. */
       (function () {
         var rail = document.querySelector('#avaliacoes .reviews');
         if (!rail) return;
-        var cards = Array.prototype.slice.call(rail.querySelectorAll('.review'));
+        var originais = Array.prototype.slice.call(rail.querySelectorAll('.review'));
+        var n = originais.length;
         var prev = document.querySelector('#avaliacoes .carousel__btn--prev');
         var next = document.querySelector('#avaliacoes .carousel__btn--next');
-        var atual = 0, pendente = false;
+        if (n < 2) return;
+
+        function copia(el) {
+          var c = el.cloneNode(true);
+          c.setAttribute('aria-hidden', 'true');
+          c.querySelectorAll('a').forEach(function (a) { a.tabIndex = -1; });
+          return c;
+        }
+        originais.slice().reverse().forEach(function (el) { rail.insertBefore(copia(el), rail.firstChild); });
+        originais.forEach(function (el) { rail.appendChild(copia(el)); });
+        var cards = Array.prototype.slice.call(rail.querySelectorAll('.review'));   /* 3 x n */
+        var atual = n, pendente = false, parado;
 
         function centroDe(el) { return el.offsetLeft + el.offsetWidth / 2; }
+        function posicao(i) { return centroDe(cards[i]) - rail.clientWidth / 2; }
         function vaiPara(i, suave) {
-          i = Math.max(0, Math.min(cards.length - 1, i));
-          rail.scrollTo({ left: centroDe(cards[i]) - rail.clientWidth / 2, behavior: suave ? 'smooth' : 'auto' });
+          rail.scrollTo({ left: posicao(i), behavior: suave ? 'smooth' : 'auto' });
+        }
+        function salto(i) {
+          /* troca da cópia para o original, sem animação e sem o encaixe atrapalhar */
+          rail.style.scrollSnapType = 'none';
+          rail.scrollLeft = posicao(i);
+          rail.offsetWidth;
+          rail.style.scrollSnapType = '';
         }
         function atualiza() {
           pendente = false;
@@ -322,20 +343,25 @@
           });
           cards.forEach(function (c, i) { c.classList.toggle('is-center', i === melhor); });
           atual = melhor;
-          prev.disabled = atual === 0;
-          next.disabled = atual === cards.length - 1;
         }
-        rail.addEventListener('scroll', function () { if (!pendente) { pendente = true; requestAnimationFrame(atualiza); } }, { passive: true });
-        window.addEventListener('resize', function () { vaiPara(atual, false); atualiza(); });
+        function aoParar() {
+          atualiza();
+          if (atual < n) { salto(atual + n); atualiza(); }
+          else if (atual >= 2 * n) { salto(atual - n); atualiza(); }
+        }
+        rail.addEventListener('scroll', function () {
+          if (!pendente) { pendente = true; requestAnimationFrame(atualiza); }
+          clearTimeout(parado); parado = setTimeout(aoParar, 140);
+        }, { passive: true });
+        window.addEventListener('resize', function () { salto(atual); atualiza(); });
         prev.addEventListener('click', function () { vaiPara(atual - 1, true); });
         next.addEventListener('click', function () { vaiPara(atual + 1, true); });
         rail.addEventListener('keydown', function (e) {
           if (e.key === 'ArrowLeft') { e.preventDefault(); vaiPara(atual - 1, true); }
           if (e.key === 'ArrowRight') { e.preventDefault(); vaiPara(atual + 1, true); }
         });
-        prev.hidden = next.hidden = cards.length < 2;
-        /* começa no segundo card, para já aparecer um de cada lado */
-        vaiPara(cards.length > 2 ? 1 : 0, false);
+        prev.hidden = next.hidden = false;
+        salto(n);   /* começa no primeiro original, com a última avaliação à esquerda */
         atualiza();
       })();
     </script>

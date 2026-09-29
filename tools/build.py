@@ -270,12 +270,12 @@ def depoimentos(lista=None, perfil=None):
     if not lista:
         return ""
     cards = []
-    for d in lista:
+    for k, d in enumerate(lista):
         n = max(1, min(5, int(d.get("estrelas", 5))))
         nome = d["nome"].strip()
         inicial = escape(nome[:1].upper())
         cards.append("""
-          <li class="review">
+          <li class="review review--c{cor}">
             <div class="review__top">
               <span class="review__avatar" aria-hidden="true">{ini}</span>
               <span class="review__who"><strong>{nome}</strong><small>{q}</small></span>
@@ -283,7 +283,7 @@ def depoimentos(lista=None, perfil=None):
             <div class="review__stars" role="img" aria-label="{n} de 5 estrelas"><span>{cheias}</span><span class="review__off">{vazias}</span></div>
             <blockquote>{t}</blockquote>
             {src}
-          </li>""".format(ini=inicial, nome=escape(nome), q=escape(d.get("quando", "")), n=n,
+          </li>""".format(cor=k % 3, ini=inicial, nome=escape(nome), q=escape(d.get("quando", "")), n=n,
                            cheias="★" * n, vazias="★" * (5 - n), t=escape(d["texto"]),
                            src=('<a class="review__src" %s>Ver avaliação no Google %s</a>' % (ext(d["link"]), ic("arrow-up-right")))
                            if d.get("link") else '<p class="review__src">Avaliação no Google</p>'))
@@ -309,20 +309,41 @@ def depoimentos(lista=None, perfil=None):
       </div>
     </section>
     <script>
-      /* Carrossel: centraliza um card, deixa os das bordas transparentes e liga as setas.
+      /* Carrossel em loop: centraliza um card, deixa os das bordas transparentes e liga as setas.
+         O script copia os cards antes e depois da lista, para sempre haver um card de cada lado;
+         ao chegar numa cópia, volta sem animação para o card original equivalente.
          Sem script, os cards continuam deslizando com o dedo ou a barra de rolagem. */
       (function () {{
         var rail = document.querySelector('#avaliacoes .reviews');
         if (!rail) return;
-        var cards = Array.prototype.slice.call(rail.querySelectorAll('.review'));
+        var originais = Array.prototype.slice.call(rail.querySelectorAll('.review'));
+        var n = originais.length;
         var prev = document.querySelector('#avaliacoes .carousel__btn--prev');
         var next = document.querySelector('#avaliacoes .carousel__btn--next');
-        var atual = 0, pendente = false;
+        if (n < 2) return;
+
+        function copia(el) {{
+          var c = el.cloneNode(true);
+          c.setAttribute('aria-hidden', 'true');
+          c.querySelectorAll('a').forEach(function (a) {{ a.tabIndex = -1; }});
+          return c;
+        }}
+        originais.slice().reverse().forEach(function (el) {{ rail.insertBefore(copia(el), rail.firstChild); }});
+        originais.forEach(function (el) {{ rail.appendChild(copia(el)); }});
+        var cards = Array.prototype.slice.call(rail.querySelectorAll('.review'));   /* 3 x n */
+        var atual = n, pendente = false, parado;
 
         function centroDe(el) {{ return el.offsetLeft + el.offsetWidth / 2; }}
+        function posicao(i) {{ return centroDe(cards[i]) - rail.clientWidth / 2; }}
         function vaiPara(i, suave) {{
-          i = Math.max(0, Math.min(cards.length - 1, i));
-          rail.scrollTo({{ left: centroDe(cards[i]) - rail.clientWidth / 2, behavior: suave ? 'smooth' : 'auto' }});
+          rail.scrollTo({{ left: posicao(i), behavior: suave ? 'smooth' : 'auto' }});
+        }}
+        function salto(i) {{
+          /* troca da cópia para o original, sem animação e sem o encaixe atrapalhar */
+          rail.style.scrollSnapType = 'none';
+          rail.scrollLeft = posicao(i);
+          rail.offsetWidth;
+          rail.style.scrollSnapType = '';
         }}
         function atualiza() {{
           pendente = false;
@@ -334,20 +355,25 @@ def depoimentos(lista=None, perfil=None):
           }});
           cards.forEach(function (c, i) {{ c.classList.toggle('is-center', i === melhor); }});
           atual = melhor;
-          prev.disabled = atual === 0;
-          next.disabled = atual === cards.length - 1;
         }}
-        rail.addEventListener('scroll', function () {{ if (!pendente) {{ pendente = true; requestAnimationFrame(atualiza); }} }}, {{ passive: true }});
-        window.addEventListener('resize', function () {{ vaiPara(atual, false); atualiza(); }});
+        function aoParar() {{
+          atualiza();
+          if (atual < n) {{ salto(atual + n); atualiza(); }}
+          else if (atual >= 2 * n) {{ salto(atual - n); atualiza(); }}
+        }}
+        rail.addEventListener('scroll', function () {{
+          if (!pendente) {{ pendente = true; requestAnimationFrame(atualiza); }}
+          clearTimeout(parado); parado = setTimeout(aoParar, 140);
+        }}, {{ passive: true }});
+        window.addEventListener('resize', function () {{ salto(atual); atualiza(); }});
         prev.addEventListener('click', function () {{ vaiPara(atual - 1, true); }});
         next.addEventListener('click', function () {{ vaiPara(atual + 1, true); }});
         rail.addEventListener('keydown', function (e) {{
           if (e.key === 'ArrowLeft') {{ e.preventDefault(); vaiPara(atual - 1, true); }}
           if (e.key === 'ArrowRight') {{ e.preventDefault(); vaiPara(atual + 1, true); }}
         }});
-        prev.hidden = next.hidden = cards.length < 2;
-        /* começa no segundo card, para já aparecer um de cada lado */
-        vaiPara(cards.length > 2 ? 1 : 0, false);
+        prev.hidden = next.hidden = false;
+        salto(n);   /* começa no primeiro original, com a última avaliação à esquerda */
         atualiza();
       }})();
     </script>""".format(nota=nota, link=link, cards="".join(cards), ic_l=ic("arrow-left"), ic_r=ic("arrow-right"))

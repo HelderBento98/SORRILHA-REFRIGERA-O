@@ -294,8 +294,8 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   width: 44px; height: 44px; border-radius: 50%; flex: none; display: grid; place-items: center;
   background: var(--blue-ink); color: #fff; font-weight: 700; font-size: 1.1rem;
 }
-.review:nth-child(3n+2) .review__avatar { background: var(--coral-ink); }
-.review:nth-child(3n+3) .review__avatar { background: var(--navy); }
+.review--c1 .review__avatar { background: var(--coral-ink); }
+.review--c2 .review__avatar { background: var(--navy); }
 .review__who { display: grid; min-width: 0; }
 .review__who strong { color: var(--navy); }
 .review__who small { color: var(--muted); font-size: .85rem; }
