@@ -284,19 +284,11 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .rating__stars { color: #f5a623; font-size: 1.15rem; letter-spacing: 2px; }
 .rating__meta small { color: var(--muted); font-size: .9rem; }
 
-.reviews-rail { --edge: max(var(--gutter), calc((100vw - 1220px) / 2 + var(--gutter))); }
-.reviews {
-  display: grid; grid-auto-flow: column; grid-auto-columns: minmax(300px, 380px); gap: 18px;
-  overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory;
-  padding: 6px var(--edge) 22px; scroll-padding-inline: var(--edge); scrollbar-width: thin;
-}
-.reviews:focus-visible { outline-offset: -3px; }
 .review {
-  scroll-snap-align: start; background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+  background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
   padding: 26px; display: flex; flex-direction: column; gap: 14px;
-  transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .25s;
 }
-.review:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: #c6d7e3; }
+.review blockquote { margin: 0; color: var(--text); font-size: 1.02rem; line-height: 1.55; flex: 1; }
 .review__top { display: flex; align-items: center; gap: 12px; }
 .review__avatar {
   width: 44px; height: 44px; border-radius: 50%; flex: none; display: grid; place-items: center;
@@ -591,18 +583,46 @@ a.review__src:hover { color: var(--coral-ink); }
 a.review__src:hover .ph { transform: translate(2px, -2px); }
 .rating:empty { display: none; }
 
-/* no computador: ~3,3 cards à vista (o pedaço do próximo mostra que tem mais) + botões de seta */
-@media (min-width: 1000px) {
-  .reviews { grid-auto-columns: calc((min(100vw, 1220px) - 2 * var(--gutter) - 3 * 18px) / 3.3); }
+
+
+/* ---------- Carrossel de avaliações (centralizado) ----------
+   O card do meio fica em destaque; os das bordas ficam menores e transparentes.
+   O script calcula a distância de cada card até o centro e grava em --d (0 = centro). */
+.reviews-head { text-align: center; max-width: 640px; margin: 0 auto 36px; display: grid; justify-items: center; gap: 4px; }
+.reviews-head .rating { justify-content: center; margin-top: 12px; }
+.carousel { position: relative; max-width: 1220px; margin: 0 auto; }
+.reviews {
+  --card: min(380px, calc(100vw - 2 * var(--gutter) - 96px));
+  display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+  padding: 24px calc(50% - var(--card) / 2) 30px; scrollbar-width: none;
+  -webkit-mask: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+          mask: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
 }
-.reviews-nav { display: flex; gap: 10px; }
-.reviews-nav[hidden] { display: none; }
-.reviews-nav button {
-  width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid var(--line); background: #fff; color: var(--navy);
-  display: grid; place-items: center; font-size: 20px; cursor: pointer;
-  transition: background-color .2s, border-color .2s, color .2s, transform .15s var(--ease);
+.reviews::-webkit-scrollbar { display: none; }
+.review {
+  --d: 0;
+  flex: 0 0 var(--card); scroll-snap-align: center;
+  opacity: calc(1 - min(var(--d), 1.6) * .42);
+  transform: scale(calc(1 - min(var(--d), 1) * .08));
+  transition: opacity .25s linear, transform .25s linear, box-shadow .3s, border-color .3s;
 }
-.reviews-nav button:hover { background: var(--navy); border-color: var(--navy); color: #fff; }
-.reviews-nav button:active { transform: scale(.94); }
-.reviews-nav button:disabled { opacity: .35; pointer-events: none; }
-@media (max-width: 999px) { .reviews-nav { display: none; } }
+.review.is-center { box-shadow: var(--shadow); border-color: #c6d7e3; }
+.carousel__btn {
+  position: absolute; top: 50%; z-index: 2; transform: translateY(-50%);
+  width: 52px; height: 52px; border-radius: 50%; border: 1.5px solid var(--line); background: #fff; color: var(--navy);
+  display: grid; place-items: center; font-size: 22px; cursor: pointer; box-shadow: 0 10px 24px -14px rgba(15, 53, 80, .5);
+  transition: background-color .2s, border-color .2s, color .2s, opacity .2s;
+}
+.carousel__btn:hover { background: var(--navy); border-color: var(--navy); color: #fff; }
+.carousel__btn:active { transform: translateY(-50%) scale(.94); }
+.carousel__btn:disabled { opacity: .3; pointer-events: none; }
+.carousel__btn--prev { left: var(--gutter); }
+.carousel__btn--next { right: var(--gutter); }
+.carousel__btn[hidden] { display: none; }
+.carousel { --card: min(380px, calc(100vw - 2 * var(--gutter) - 96px)); }
+@media (max-width: 600px) {
+  .carousel__btn { width: 42px; height: 42px; font-size: 18px; }
+  .carousel__btn--prev { left: 6px; }
+  .carousel__btn--next { right: 6px; }
+}
+@media (prefers-reduced-motion: reduce) { .reviews { scroll-behavior: auto; } }

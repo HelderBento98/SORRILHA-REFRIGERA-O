@@ -295,47 +295,59 @@ def depoimentos(lista=None, perfil=None):
     return """
     <section class="section section--soft" id="avaliacoes" aria-labelledby="av-t">
       <div class="wrap">
-        <div class="section__head section__head--row reveal">
-          <div>
-            <p class="eyebrow">Avaliações no Google</p>
-            <h2 id="av-t">Quem já chamou a Sorrilha</h2>
-          </div>
-          <div class="rating">
-            {nota}
-            {link}
-            <div class="reviews-nav" hidden>
-              <button type="button" data-dir="-1" aria-label="Avaliações anteriores">{ic_l}</button>
-              <button type="button" data-dir="1" aria-label="Próximas avaliações">{ic_r}</button>
-            </div>
-          </div>
+        <div class="reviews-head reveal">
+          <p class="eyebrow">Avaliações no Google</p>
+          <h2 id="av-t">Quem já chamou a Sorrilha</h2>
+          <div class="rating">{nota}{link}</div>
         </div>
       </div>
-      <div class="reviews-rail reveal">
+      <div class="carousel reveal">
+        <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Avaliação anterior" hidden>{ic_l}</button>
         <ul class="reviews" tabindex="0" aria-label="Avaliações de clientes">{cards}
         </ul>
+        <button class="carousel__btn carousel__btn--next" type="button" aria-label="Próxima avaliação" hidden>{ic_r}</button>
       </div>
     </section>
     <script>
-      /* setas das avaliações (computador). Sem script, os cards continuam deslizando normalmente. */
+      /* Carrossel: centraliza um card, deixa os das bordas transparentes e liga as setas.
+         Sem script, os cards continuam deslizando com o dedo ou a barra de rolagem. */
       (function () {{
         var rail = document.querySelector('#avaliacoes .reviews');
-        var nav = document.querySelector('#avaliacoes .reviews-nav');
-        if (!rail || !nav) return;
-        var btns = nav.querySelectorAll('button');
-        function passo() {{ var c = rail.querySelector('.review'); return c ? c.getBoundingClientRect().width + 18 : 300; }}
-        function atualiza() {{
-          var max = rail.scrollWidth - rail.clientWidth - 2;
-          btns[0].disabled = rail.scrollLeft <= 2;
-          btns[1].disabled = rail.scrollLeft >= max;
-          nav.hidden = max <= 0;
+        if (!rail) return;
+        var cards = Array.prototype.slice.call(rail.querySelectorAll('.review'));
+        var prev = document.querySelector('#avaliacoes .carousel__btn--prev');
+        var next = document.querySelector('#avaliacoes .carousel__btn--next');
+        var atual = 0, pendente = false;
+
+        function centroDe(el) {{ return el.offsetLeft + el.offsetWidth / 2; }}
+        function vaiPara(i, suave) {{
+          i = Math.max(0, Math.min(cards.length - 1, i));
+          rail.scrollTo({{ left: centroDe(cards[i]) - rail.clientWidth / 2, behavior: suave ? 'smooth' : 'auto' }});
         }}
-        btns.forEach(function (b) {{
-          b.addEventListener('click', function () {{
-            rail.scrollBy({{ left: passo() * Number(b.dataset.dir), behavior: 'smooth' }});
+        function atualiza() {{
+          pendente = false;
+          var meio = rail.scrollLeft + rail.clientWidth / 2, melhor = 0, menor = Infinity;
+          cards.forEach(function (c, i) {{
+            var d = Math.abs(centroDe(c) - meio) / (c.offsetWidth + 20);
+            c.style.setProperty('--d', d.toFixed(3));
+            if (d < menor) {{ menor = d; melhor = i; }}
           }});
+          cards.forEach(function (c, i) {{ c.classList.toggle('is-center', i === melhor); }});
+          atual = melhor;
+          prev.disabled = atual === 0;
+          next.disabled = atual === cards.length - 1;
+        }}
+        rail.addEventListener('scroll', function () {{ if (!pendente) {{ pendente = true; requestAnimationFrame(atualiza); }} }}, {{ passive: true }});
+        window.addEventListener('resize', function () {{ vaiPara(atual, false); atualiza(); }});
+        prev.addEventListener('click', function () {{ vaiPara(atual - 1, true); }});
+        next.addEventListener('click', function () {{ vaiPara(atual + 1, true); }});
+        rail.addEventListener('keydown', function (e) {{
+          if (e.key === 'ArrowLeft') {{ e.preventDefault(); vaiPara(atual - 1, true); }}
+          if (e.key === 'ArrowRight') {{ e.preventDefault(); vaiPara(atual + 1, true); }}
         }});
-        rail.addEventListener('scroll', atualiza, {{ passive: true }});
-        window.addEventListener('resize', atualiza);
+        prev.hidden = next.hidden = cards.length < 2;
+        /* começa no segundo card, para já aparecer um de cada lado */
+        vaiPara(cards.length > 2 ? 1 : 0, false);
         atualiza();
       }})();
     </script>""".format(nota=nota, link=link, cards="".join(cards), ic_l=ic("arrow-left"), ic_r=ic("arrow-right"))
