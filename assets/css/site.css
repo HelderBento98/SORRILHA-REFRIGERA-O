@@ -584,3 +584,14 @@ svg.ico { width: 1em; height: 1em; display: inline-block; vertical-align: -.125e
     100% { transform: rotate(0); }
   }
 }
+
+a.review__src { display: flex; align-items: center; gap: 6px; font-weight: 600; color: var(--blue-ink); text-decoration: none; }
+a.review__src .ph { transition: transform .25s var(--ease); }
+a.review__src:hover { color: var(--coral-ink); }
+a.review__src:hover .ph { transform: translate(2px, -2px); }
+.rating:empty { display: none; }
+
+/* no computador, os cards cabem lado a lado sem cortar; no celular continuam deslizando */
+@media (min-width: 1000px) {
+  .reviews { grid-auto-flow: row; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); overflow: visible; }
+}

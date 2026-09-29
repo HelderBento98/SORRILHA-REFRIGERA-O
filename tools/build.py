@@ -282,9 +282,11 @@ def depoimentos(lista=None, perfil=None):
             </div>
             <div class="review__stars" role="img" aria-label="{n} de 5 estrelas"><span>{cheias}</span><span class="review__off">{vazias}</span></div>
             <blockquote>{t}</blockquote>
-            <p class="review__src">Avaliação no Google</p>
+            {src}
           </li>""".format(ini=inicial, nome=escape(nome), q=escape(d.get("quando", "")), n=n,
-                           cheias="★" * n, vazias="★" * (5 - n), t=escape(d["texto"])))
+                           cheias="★" * n, vazias="★" * (5 - n), t=escape(d["texto"]),
+                           src=('<a class="review__src" %s>Ver avaliação no Google %s</a>' % (ext(d["link"]), ic("arrow-up-right")))
+                           if d.get("link") else '<p class="review__src">Avaliação no Google</p>'))
     link = ('<a class="btn btn--ghost" %s>Ver no Google %s</a>' % (ext(perfil), ic("arrow-up-right"))) if perfil else ""
     nota = ""
     if GOOGLE_NOTA and GOOGLE_TOTAL:
