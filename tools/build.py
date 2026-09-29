@@ -15,7 +15,7 @@ from urllib.parse import quote
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from conteudo import (EMPRESA, SITE_URL, DEPOIMENTOS, GOOGLE_PERFIL, GOOGLE_NOTA, GOOGLE_TOTAL, MARCAS_TODAS, INICIO,  # noqa: E402
+from conteudo import (EMPRESA, SITE_URL, DEPOIMENTOS, GOOGLE_PERFIL, GOOGLE_NOTA, GOOGLE_TOTAL, MARCAS_AR, MARCAS_REFRIG, MARCAS_FOGAO, INICIO,  # noqa: E402
                       SERVICOS, OPCOES_FORM, OPCAO_POR_SERVICO)
 
 E = EMPRESA
@@ -249,18 +249,37 @@ def formulario(form_id, marcado="Ar-condicionado", titulo="Descreva o problema",
 
 
 def faixa_marcas():
-    itens = "".join('<li>%s</li>' % escape(m) for m in MARCAS_TODAS)
+    """Marcas atendidas em 3 faixas que correm sem parar (efeito "marquee", como o do Spell UI).
+    Cada faixa repete a lista duas vezes e desliza metade do comprimento, então o fim encontra o começo.
+    As bordas desbotam e passar o mouse pausa a faixa."""
+    grupos = [("Ar-condicionado", "snowflake", MARCAS_AR, ""),
+              ("Geladeiras e freezers", "fridge", MARCAS_REFRIG, " mq--reverse"),
+              ("Fogões", "oven", MARCAS_FOGAO, "")]
+    linhas = []
+    for titulo, icone, marcas, extra in grupos:
+        itens = "".join("<li>%s</li>" % escape(m) for m in marcas)
+        linhas.append("""
+        <div class="mq-row">
+          <p class="mq-row__label">{ic} {t}</p>
+          <div class="mq{extra}" role="group" aria-label="Marcas de {tl}">
+            <div class="mq__track">
+              <ul class="mq__group">{i}</ul>
+              <ul class="mq__group" aria-hidden="true">{i}</ul>
+            </div>
+          </div>
+        </div>""".format(ic=ic(icone), t=escape(titulo), tl=escape(titulo.lower()), extra=extra, i=itens))
     return """
-    <section class="brands" aria-labelledby="marcas-t">
-      <div class="wrap brands__head">
-        <h2 id="marcas-t" class="brands__title">Atendemos todas as marcas</h2>
+    <section class="brands" id="marcas" aria-labelledby="marcas-t">
+      <div class="wrap brands__head reveal">
+        <div>
+          <p class="eyebrow eyebrow--light">Marcas</p>
+          <h2 id="marcas-t">Atendemos todas as marcas</h2>
+        </div>
         <p class="brands__note">Assistência técnica independente. Não somos assistência autorizada dos fabricantes.</p>
       </div>
-      <div class="marquee" aria-label="Marcas atendidas">
-        <ul class="marquee__track">{i}</ul>
-        <ul class="marquee__track" aria-hidden="true">{i}</ul>
+      <div class="brands__rows">{linhas}
       </div>
-    </section>""".format(i=itens)
+    </section>""".format(linhas="".join(linhas))
 
 
 def depoimentos(lista=None, perfil=None):
@@ -563,6 +582,7 @@ def pagina_inicio():
       </div>
     </section>
 {depo}
+{marcas}
 
     <section class="section" id="como-funciona" aria-labelledby="como-t">
       <div class="wrap">
@@ -586,7 +606,7 @@ def pagina_inicio():
            ic_wa=ic("whatsapp-logo"), form=formulario("f-inicio", titulo="Peça seu orçamento",
                                                       sub="Preencha e envie pelo WhatsApp."),
            ondas=faixa_ondas(), servicos=servicos,
-           arr=ic("arrow-right"), depo=depoimentos(), faq=faq_html(I["faq"], fundo="section--soft"), contato=contato(R))
+           arr=ic("arrow-right"), depo=depoimentos(), marcas=faixa_marcas(), faq=faq_html(I["faq"], fundo="section--soft"), contato=contato(R))
 
     html = head(I["title"], I["description"], "", R, [ld_empresa(), ld_faq(I["faq"])],
                 keywords="refrigeração Sertãozinho, ar-condicionado Sertãozinho, câmara fria Sertãozinho, "
