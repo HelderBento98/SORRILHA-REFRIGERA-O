@@ -504,3 +504,48 @@ a.channel:hover .channel__arr { transform: translate(3px, -3px); }
 /* sem a faixa de marcas, a onda do topo termina no branco da seção seguinte */
 .waves__blue { fill: var(--bg); }
 .section--flush-top { padding-top: 0; }
+
+/* ---------- Ícones em SVG (mesmo tamanho dos ícones de fonte) ---------- */
+svg.ico { width: 1em; height: 1em; display: inline-block; vertical-align: -.125em; overflow: visible; }
+
+/* ---------- Animação dos ícones de serviço ao passar o mouse ----------
+   Cada ícone faz um gesto ligado ao próprio serviço:
+   floco gira · geladeira treme de frio · termômetro sobe e desce ·
+   máquina centrifuga · fogão acende (pulsa) · chave aperta.            */
+.svc__icon { transition: background-color .3s, color .3s, transform .35s var(--ease); }
+.svc__icon > * { display: inline-block; transform-origin: 50% 50%; }
+.svc__link:hover .svc__icon, .svc__link:focus-visible .svc__icon { transform: scale(1.08) rotate(-4deg); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .svc__link:hover .ph-snowflake,        .svc__link:focus-visible .ph-snowflake        { animation: ico-spin-slow .9s var(--ease) both; }
+  .svc__link:hover .ico-fridge,          .svc__link:focus-visible .ico-fridge          { animation: ico-shiver .5s ease-in-out 2; }
+  .svc__link:hover .ph-thermometer-cold, .svc__link:focus-visible .ph-thermometer-cold { animation: ico-bob .7s var(--ease) 2; }
+  .svc__link:hover .ph-washing-machine,  .svc__link:focus-visible .ph-washing-machine  { animation: ico-spin 1s cubic-bezier(.5, 0, .2, 1) both; }
+  .svc__link:hover .ph-oven,             .svc__link:focus-visible .ph-oven             { animation: ico-heat .8s ease-in-out 2; }
+  .svc__link:hover .ph-wrench,           .svc__link:focus-visible .ph-wrench           { animation: ico-tighten .8s var(--ease) both; }
+
+  /* puxadores da geladeira abrem de leve */
+  .svc__link:hover .ico-fridge__h1, .svc__link:hover .ico-fridge__h2 { animation: ico-handle .5s ease-in-out 2; }
+
+  @keyframes ico-spin-slow { to { transform: rotate(180deg); } }
+  @keyframes ico-spin { to { transform: rotate(360deg); } }
+  @keyframes ico-shiver {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-2px) rotate(-3deg); }
+    40% { transform: translateX(2px) rotate(3deg); }
+    60% { transform: translateX(-1px) rotate(-2deg); }
+    80% { transform: translateX(1px) rotate(1deg); }
+  }
+  @keyframes ico-handle { 50% { transform: translateX(-1.5px); } }
+  @keyframes ico-bob { 50% { transform: translateY(-4px); } }
+  @keyframes ico-heat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.14); color: var(--coral); }
+  }
+  @keyframes ico-tighten {
+    0% { transform: rotate(0); }
+    45% { transform: rotate(-35deg); }
+    70% { transform: rotate(-25deg); }
+    100% { transform: rotate(0); }
+  }
+}

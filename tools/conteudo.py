@@ -141,7 +141,7 @@ SERVICOS = [
     {
         "slug": "camara-fria",
         "nome": "Câmara fria",
-        "icone": "storefront",
+        "icone": "fridge",
         "resumo": "Instalação, manutenção e conserto de câmara fria para mercados e comércios.",
         "title": "Manutenção de Câmara Fria em Sertãozinho | Sorrilha",
         "description": ("Instalação, manutenção preventiva e conserto de câmara fria para mercados, açougues, padarias "

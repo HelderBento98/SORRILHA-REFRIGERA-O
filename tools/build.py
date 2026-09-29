@@ -27,7 +27,19 @@ def wa(msg):
     return "https://wa.me/%s?text=%s" % (E["whatsapp"], quote(msg, safe=""))
 
 
+# Ícones que não existem no Phosphor, desenhados como SVG no mesmo traço.
+# "fridge": Tabler Icons (MIT), https://tabler.io/icons
+SVG_ICONES = {
+    "fridge": ('<svg class="ph ico ico-fridge%s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" '
+               'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+               '<path d="M5 5a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2l0 -14"/>'
+               '<path d="M5 10h14"/><path class="ico-fridge__h1" d="M9 6v1"/><path class="ico-fridge__h2" d="M9 13v3"/></svg>'),
+}
+
+
 def ic(nome, extra=""):
+    if nome in SVG_ICONES:
+        return SVG_ICONES[nome] % ((" " + extra) if extra else "")
     return '<i class="ph ph-%s%s" aria-hidden="true"></i>' % (nome, (" " + extra) if extra else "")
 
 
