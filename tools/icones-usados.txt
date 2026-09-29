@@ -1,3 +1,4 @@
+arrow-left
 arrow-right
 arrow-up-right
 caret-down

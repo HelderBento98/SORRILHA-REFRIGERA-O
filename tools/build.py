@@ -303,6 +303,10 @@ def depoimentos(lista=None, perfil=None):
           <div class="rating">
             {nota}
             {link}
+            <div class="reviews-nav" hidden>
+              <button type="button" data-dir="-1" aria-label="Avaliações anteriores">{ic_l}</button>
+              <button type="button" data-dir="1" aria-label="Próximas avaliações">{ic_r}</button>
+            </div>
           </div>
         </div>
       </div>
@@ -310,7 +314,31 @@ def depoimentos(lista=None, perfil=None):
         <ul class="reviews" tabindex="0" aria-label="Avaliações de clientes">{cards}
         </ul>
       </div>
-    </section>""".format(nota=nota, link=link, cards="".join(cards))
+    </section>
+    <script>
+      /* setas das avaliações (computador). Sem script, os cards continuam deslizando normalmente. */
+      (function () {{
+        var rail = document.querySelector('#avaliacoes .reviews');
+        var nav = document.querySelector('#avaliacoes .reviews-nav');
+        if (!rail || !nav) return;
+        var btns = nav.querySelectorAll('button');
+        function passo() {{ var c = rail.querySelector('.review'); return c ? c.getBoundingClientRect().width + 18 : 300; }}
+        function atualiza() {{
+          var max = rail.scrollWidth - rail.clientWidth - 2;
+          btns[0].disabled = rail.scrollLeft <= 2;
+          btns[1].disabled = rail.scrollLeft >= max;
+          nav.hidden = max <= 0;
+        }}
+        btns.forEach(function (b) {{
+          b.addEventListener('click', function () {{
+            rail.scrollBy({{ left: passo() * Number(b.dataset.dir), behavior: 'smooth' }});
+          }});
+        }});
+        rail.addEventListener('scroll', atualiza, {{ passive: true }});
+        window.addEventListener('resize', atualiza);
+        atualiza();
+      }})();
+    </script>""".format(nota=nota, link=link, cards="".join(cards), ic_l=ic("arrow-left"), ic_r=ic("arrow-right"))
 
 
 def faq_html(faq, titulo="Dúvidas frequentes", sid="duvidas"):

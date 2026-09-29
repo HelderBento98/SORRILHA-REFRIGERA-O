@@ -591,7 +591,18 @@ a.review__src:hover { color: var(--coral-ink); }
 a.review__src:hover .ph { transform: translate(2px, -2px); }
 .rating:empty { display: none; }
 
-/* no computador, os cards cabem lado a lado sem cortar; no celular continuam deslizando */
+/* no computador: ~3,3 cards à vista (o pedaço do próximo mostra que tem mais) + botões de seta */
 @media (min-width: 1000px) {
-  .reviews { grid-auto-flow: row; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); overflow: visible; }
+  .reviews { grid-auto-columns: calc((min(100vw, 1220px) - 2 * var(--gutter) - 3 * 18px) / 3.3); }
 }
+.reviews-nav { display: flex; gap: 10px; }
+.reviews-nav[hidden] { display: none; }
+.reviews-nav button {
+  width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid var(--line); background: #fff; color: var(--navy);
+  display: grid; place-items: center; font-size: 20px; cursor: pointer;
+  transition: background-color .2s, border-color .2s, color .2s, transform .15s var(--ease);
+}
+.reviews-nav button:hover { background: var(--navy); border-color: var(--navy); color: #fff; }
+.reviews-nav button:active { transform: scale(.94); }
+.reviews-nav button:disabled { opacity: .35; pointer-events: none; }
+@media (max-width: 999px) { .reviews-nav { display: none; } }

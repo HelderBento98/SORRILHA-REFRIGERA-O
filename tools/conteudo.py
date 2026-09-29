@@ -35,18 +35,27 @@ SITE_URL = "https://helderbento98.github.io/SORRILHA-REFRIGERA-O"
 DEPOIMENTOS = [
     # Avaliações reais do perfil no Google (5 estrelas), texto como o cliente escreveu.
     # Nome exibido: primeiro nome + inicial do sobrenome. "link" abre a avaliação no Google.
-    {"nome": "Tainá L.", "estrelas": 5, "quando": "há 3 meses",
-     "texto": "Muito bom profissional, atendimento excelente.",
-     "link": "https://www.google.com/maps/contrib/117794246307687388836/reviews?hl=pt-BR"},
-    {"nome": "Andra B.", "estrelas": 5, "quando": "há 3 meses",
-     "texto": "Prestam um ótimo atendimento, são honestos com os clientes, e isso é um grande diferencial, podem confiar!",
-     "link": "https://www.google.com/maps/contrib/114087981476000836882/reviews?hl=pt-BR"},
-    {"nome": "Quezia F.", "estrelas": 5, "quando": "há 2 meses",
-     "texto": "Excelente profissional e ótimo atendimento.",
-     "link": "https://www.google.com/maps/contrib/115886534326477653508/reviews?hl=pt-BR"},
     {"nome": "Manuel H.", "estrelas": 5, "quando": "há 3 meses",
      "texto": "Muito bom. Fez o concerto da máquina de lavar ficou top. Muito prestativo, recomendo.",
      "link": "https://www.google.com/maps/contrib/110952830723655940270/reviews?hl=pt-BR"},
+    {"nome": "Andra B.", "estrelas": 5, "quando": "há 3 meses",
+     "texto": "Prestam um ótimo atendimento, são honestos com os clientes, e isso é um grande diferencial, podem confiar!",
+     "link": "https://www.google.com/maps/contrib/114087981476000836882/reviews?hl=pt-BR"},
+    {"nome": "Tainá L.", "estrelas": 5, "quando": "há 3 meses",
+     "texto": "Muito bom profissional, atendimento excelente.",
+     "link": "https://www.google.com/maps/contrib/117794246307687388836/reviews?hl=pt-BR"},
+    {"nome": "Amariuldo S.", "estrelas": 5, "quando": "há 2 semanas",
+     "texto": "Muito bom exelente",
+     "link": "https://www.google.com/maps/contrib/100359409370315906318/reviews?hl=pt-BR"},
+    {"nome": "Quezia F.", "estrelas": 5, "quando": "há 2 meses",
+     "texto": "Excelente profissional e ótimo atendimento.",
+     "link": "https://www.google.com/maps/contrib/115886534326477653508/reviews?hl=pt-BR"},
+    {"nome": "Pri R.", "estrelas": 5, "quando": "há 2 meses",
+     "texto": "Ótimo serviço!!!!! Indico",
+     "link": "https://www.google.com/maps/contrib/107708286854145130605/reviews?hl=pt-BR"},
+    {"nome": "Eduardo B.", "estrelas": 5, "quando": "há 3 meses",
+     "texto": "Atendimento de qualidade, gostei",
+     "link": "https://www.google.com/maps/contrib/118187716534474903360/reviews?hl=pt-BR"},
 ]
 
 # Link para o perfil no Google (aparece junto dos depoimentos). Deixe "" se não tiver.
