@@ -41,27 +41,28 @@
 </head>
 <body>
   <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+  <!-- Âncora do menu mobile (funciona só com CSS, sem JavaScript) -->
+  <span id="menu" class="menu-anchor" aria-hidden="true"></span>
 
   <!-- ============ NAVEGAÇÃO ============ -->
   <header class="nav" id="topo">
     <div class="wrap nav__inner">
       <a href="#topo" class="nav__brand" aria-label="Sorrilha Refrigeração, início">
-        <img src="assets/img/logo.png" alt="Sorrilha Refrigeração" width="806" height="200">
+        <img src="assets/img/logo.png" alt="Sorrilha Refrigeração" width="806" height="200" fetchpriority="high">
       </a>
 
-      <nav class="nav__links" id="menu" aria-label="Principal">
+      <nav class="nav__links" aria-label="Principal">
         <a href="#servicos">Serviços</a>
         <a href="#comercios">Para comércios</a>
         <a href="#como-funciona">Como funciona</a>
         <a href="#contato">Contato</a>
-        <a class="btn btn--primary btn--sm nav__cta" data-wa="geral" href="#">
+        <a class="btn btn--primary btn--sm nav__cta" href="https://wa.me/5575999062183?text=Ol%C3%A1%2C%20Gabriel%21%20Vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento." target="_blank" rel="noopener">
           <i class="ph ph-whatsapp-logo" aria-hidden="true"></i> Chamar no WhatsApp
         </a>
       </nav>
 
-      <button class="nav__toggle" aria-controls="menu" aria-expanded="false" aria-label="Abrir menu">
-        <i class="ph ph-list" aria-hidden="true"></i>
-      </button>
+      <a class="nav__toggle nav__toggle--open" href="#menu" aria-label="Abrir menu"><i class="ph ph-list" aria-hidden="true"></i></a>
+      <a class="nav__toggle nav__toggle--close" href="#fechar" aria-label="Fechar menu"><i class="ph ph-x" aria-hidden="true"></i></a>
     </div>
   </header>
 
@@ -75,7 +76,7 @@
           <h1>Frio funcionando e casa em ordem, <span class="hl">com um só chamado.</span></h1>
           <p class="lead">Ar-condicionado, câmara fria, eletrodomésticos e pequenos reparos elétricos e hidráulicos. Você chama, a gente vai até você.</p>
           <div class="hero__ctas">
-            <a class="btn btn--primary" data-wa="geral" href="#">
+            <a class="btn btn--primary" href="https://wa.me/5575999062183?text=Ol%C3%A1%2C%20Gabriel%21%20Vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento." target="_blank" rel="noopener">
               <i class="ph ph-whatsapp-logo" aria-hidden="true"></i> Chamar no WhatsApp
             </a>
             <a class="btn btn--ghost" href="#servicos">Ver serviços <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
@@ -131,7 +132,7 @@
               <li>Limpeza e higienização</li>
               <li>Assistência técnica e conserto</li>
             </ul>
-            <a class="tile__link" data-wa="ar" href="#">Pedir orçamento <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
+            <a class="tile__link" href="https://wa.me/5575999062183?text=Ol%C3%A1%2C%20Gabriel%21%20Vim%20pelo%20site%20e%20preciso%20de%20servi%C3%A7o%20em%20ar-condicionado%20%28instala%C3%A7%C3%A3o%2C%20limpeza%20ou%20conserto%29." target="_blank" rel="noopener">Pedir orçamento <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
             <svg class="tile__deco" viewBox="0 0 200 120" aria-hidden="true"><path d="M10 40 C60 10 110 70 190 30"/><path d="M10 70 C60 40 110 100 190 60"/><path d="M10 100 C60 70 110 130 190 90"/></svg>
           </article>
 
@@ -140,7 +141,7 @@
             <div class="tile__icon"><i class="ph ph-thermometer-cold" aria-hidden="true"></i></div>
             <h3>Geladeiras e freezers</h3>
             <p>Assistência técnica para o que parou de gelar ou está gelando demais.</p>
-            <a class="tile__link" data-wa="freezer" href="#">Pedir orçamento <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
+            <a class="tile__link" href="https://wa.me/5575999062183?text=Ol%C3%A1%2C%20Gabriel%21%20Vim%20pelo%20site%20e%20preciso%20de%20assist%C3%AAncia%20em%20geladeira/freezer." target="_blank" rel="noopener">Pedir orçamento <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
           </article>
 
           <!-- Máquina de lavar -->
@@ -148,7 +149,7 @@
             <div class="tile__icon"><i class="ph ph-washing-machine" aria-hidden="true"></i></div>
             <h3>Máquina de lavar</h3>
             <p>Assistência técnica e limpeza completa da máquina.</p>
-            <a class="tile__link" data-wa="lavar" href="#">Pedir orçamento <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
+            <a class="tile__link" href="https://wa.me/5575999062183?text=Ol%C3%A1%2C%20Gabriel%21%20Vim%20pelo%20site%20e%20preciso%20de%20assist%C3%AAncia/limpeza%20de%20m%C3%A1quina%20de%20lavar." target="_blank" rel="noopener">Pedir orçamento <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
           </article>
 
           <!-- Fogão -->
@@ -156,7 +157,7 @@
             <div class="tile__icon"><i class="ph ph-oven" aria-hidden="true"></i></div>
             <h3>Fogão</h3>
             <p>Assistência técnica para o fogão da sua casa.</p>
-            <a class="tile__link" data-wa="fogao" href="#">Pedir orçamento <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
+            <a class="tile__link" href="https://wa.me/5575999062183?text=Ol%C3%A1%2C%20Gabriel%21%20Vim%20pelo%20site%20e%20preciso%20de%20assist%C3%AAncia%20em%20fog%C3%A3o." target="_blank" rel="noopener">Pedir orçamento <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
           </article>
 
           <!-- Câmara fria (atalho) -->
@@ -182,7 +183,7 @@
               <li><i class="ph ph-pipe" aria-hidden="true"></i> Conserto de encanamento</li>
               <li><i class="ph ph-drop" aria-hidden="true"></i> Vazamentos e pequenos reparos hidráulicos</li>
             </ul>
-            <a class="tile__link" data-wa="reparos" href="#">Pedir orçamento <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
+            <a class="tile__link" href="https://wa.me/5575999062183?text=Ol%C3%A1%2C%20Gabriel%21%20Vim%20pelo%20site%20e%20preciso%20de%20um%20reparo%20em%20casa%20%28tomada%2C%20lustre%2C%20encanamento...%29." target="_blank" rel="noopener">Pedir orçamento <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
           </article>
         </div>
       </div>
@@ -195,7 +196,7 @@
           <p class="eyebrow eyebrow--light">Para mercados e comércios</p>
           <h2>Câmara fria parada é mercadoria perdida.</h2>
           <p class="section__sub section__sub--light">Instalação, limpeza e assistência técnica de câmaras frias, freezers e ar-condicionado do seu estabelecimento. Quanto antes o chamado, menor o prejuízo.</p>
-          <a class="btn btn--primary" data-wa="comercio" href="#">
+          <a class="btn btn--primary" href="https://wa.me/5575999062183?text=Ol%C3%A1%2C%20Gabriel%21%20Vim%20pelo%20site.%20Tenho%20um%20com%C3%A9rcio%20e%20preciso%20de%20atendimento%20em%20c%C3%A2mara%20fria/refrigera%C3%A7%C3%A3o." target="_blank" rel="noopener">
             <i class="ph ph-whatsapp-logo" aria-hidden="true"></i> Chamar no WhatsApp
           </a>
         </div>
@@ -247,13 +248,13 @@
     <!-- ============ CONTATO ============ -->
     <section class="contact" id="contato">
       <div class="wrap contact__inner reveal">
-        <img class="contact__mark" src="assets/img/mark.png" alt="" width="240" height="200">
+        <img class="contact__mark" src="assets/img/mark.png" alt="" width="240" height="200" loading="lazy" decoding="async">
         <div class="contact__copy">
           <p class="eyebrow eyebrow--light">Atendimento em Sertãozinho - SP</p>
           <h2>Precisa de um técnico? Fale direto com o Gabriel.</h2>
           <a class="contact__phone" href="tel:+5575999062183"><i class="ph ph-phone" aria-hidden="true"></i> (75) 99906-2183</a>
         </div>
-        <a class="btn btn--primary btn--lg" data-wa="geral" href="#">
+        <a class="btn btn--primary btn--lg" href="https://wa.me/5575999062183?text=Ol%C3%A1%2C%20Gabriel%21%20Vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento." target="_blank" rel="noopener">
           <i class="ph ph-whatsapp-logo" aria-hidden="true"></i> Chamar no WhatsApp
         </a>
       </div>
@@ -262,17 +263,16 @@
 
   <footer class="footer">
     <div class="wrap footer__inner">
-      <img src="assets/img/logo.png" alt="Sorrilha Refrigeração" width="806" height="200" class="footer__logo">
+      <img src="assets/img/logo.png" alt="Sorrilha Refrigeração" width="806" height="200" class="footer__logo" loading="lazy" decoding="async">
       <p>Gabriel Sorrilha · Sertãozinho - SP · <a href="tel:+5575999062183">(75) 99906-2183</a></p>
-      <p class="footer__small">© <span id="ano">2026</span> Sorrilha Refrigeração. Sempre com você.</p>
+      <p class="footer__small">© 2026 Sorrilha Refrigeração. Sempre com você.</p>
     </div>
   </footer>
 
   <!-- Botão flutuante -->
-  <a class="fab" data-wa="geral" href="#" aria-label="Chamar no WhatsApp">
+  <a class="fab" href="https://wa.me/5575999062183?text=Ol%C3%A1%2C%20Gabriel%21%20Vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento." target="_blank" rel="noopener" aria-label="Chamar no WhatsApp">
     <i class="ph ph-whatsapp-logo" aria-hidden="true"></i>
   </a>
 
-  <script src="assets/js/main.js" defer></script>
 </body>
 </html>

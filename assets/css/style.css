@@ -57,6 +57,8 @@ p { margin: 0; }
 
 .wrap { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
+.menu-anchor { position: fixed; top: 0; left: 0; width: 0; height: 0; }
+
 .skip {
   position: absolute; left: -999px; top: 8px; z-index: 100;
   background: var(--navy); color: #fff; padding: 10px 16px; border-radius: 999px;
@@ -96,10 +98,9 @@ p { margin: 0; }
   background: rgba(255, 255, 255, .92);
   backdrop-filter: saturate(1.4) blur(10px);
   -webkit-backdrop-filter: saturate(1.4) blur(10px);
-  border-bottom: 1px solid transparent;
-  transition: border-color .25s ease, box-shadow .25s ease;
+  border-bottom: 1px solid var(--line);
 }
-.nav.is-scrolled { border-bottom-color: var(--line); box-shadow: 0 6px 20px -16px rgba(15, 53, 80, .5); }
+
 .nav__inner { height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 .nav__brand img { height: 42px; width: auto; }
 .nav__links { display: flex; align-items: center; gap: 28px; }
@@ -113,8 +114,8 @@ p { margin: 0; }
 }
 .nav__links > a:not(.btn):hover::after { transform: scaleX(1); }
 .nav__toggle {
-  display: none; background: none; border: 0; padding: 8px; margin-right: -8px;
-  font-size: 30px; color: var(--navy); cursor: pointer;
+  display: none; padding: 8px; margin-right: -8px; line-height: 0;
+  font-size: 30px; color: var(--navy); text-decoration: none;
 }
 
 /* ---------- Hero ---------- */
@@ -300,28 +301,31 @@ p { margin: 0; }
 .footer a { color: var(--blue-ink); font-weight: 600; text-decoration: none; }
 .footer__small { font-size: .9rem; }
 
-/* ---------- Botão flutuante ---------- */
+/* ---------- Botão flutuante (só no celular) ---------- */
 .fab {
   position: fixed; right: 18px; bottom: 18px; z-index: 60;
   width: 62px; height: 62px; border-radius: 50%;
-  display: grid; place-items: center; font-size: 32px;
+  display: none; place-items: center; font-size: 32px;
   background: var(--coral-ink); color: #fff; text-decoration: none;
   box-shadow: 0 12px 28px -8px rgba(201, 58, 51, .6);
-  opacity: 0; transform: translateY(16px) scale(.9); pointer-events: none;
-  transition: opacity .3s ease, transform .35s var(--ease-out), background-color .2s ease;
+  transition: background-color .2s ease, transform .15s var(--ease-out);
 }
-.fab.is-visible { opacity: 1; transform: none; pointer-events: auto; }
 .fab:hover { background: var(--coral-ink-2); }
 .fab:active { transform: scale(.94); }
+@media (max-width: 860px) { .fab { display: grid; } }
 
-/* ---------- Revelar ao rolar ---------- */
-.js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s var(--ease-out), transform .6s var(--ease-out); }
-.js .reveal.is-in { opacity: 1; transform: none; }
-.js .steps .step:nth-child(2).reveal.is-in { transform: translateY(24px); }
-.js .bento .reveal:nth-child(2), .js .steps .reveal:nth-child(2) { transition-delay: .06s; }
-.js .bento .reveal:nth-child(3), .js .steps .reveal:nth-child(3) { transition-delay: .12s; }
-.js .bento .reveal:nth-child(4) { transition-delay: .06s; }
-.js .bento .reveal:nth-child(5) { transition-delay: .12s; }
+/* ---------- Revelar ao rolar (só CSS) ----------
+   Navegadores que não suportam simplesmente mostram tudo parado. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+    @keyframes reveal { from { opacity: 0; transform: translateY(24px); } }
+  }
+}
 
 /* ============ Responsivo ============ */
 @media (max-width: 1000px) {
@@ -337,7 +341,9 @@ p { margin: 0; }
 }
 
 @media (max-width: 860px) {
-  .nav__toggle { display: block; }
+  .nav__toggle--open { display: block; }
+  body:has(#menu:target) .nav__toggle--open { display: none; }
+  body:has(#menu:target) .nav__toggle--close { display: block; }
   .nav__links {
     position: absolute; top: 72px; left: 0; right: 0;
     flex-direction: column; align-items: stretch; gap: 0;
@@ -347,13 +353,13 @@ p { margin: 0; }
     opacity: 0; transform: translateY(-8px); pointer-events: none; visibility: hidden;
     transition: opacity .2s ease, transform .25s var(--ease-out), visibility .2s;
   }
-  .nav.is-open .nav__links { opacity: 1; transform: none; pointer-events: auto; visibility: visible; }
+  body:has(#menu:target) .nav__links { opacity: 1; transform: none; pointer-events: auto; visibility: visible; }
   .nav__links > a:not(.btn) { padding: 14px 4px; border-bottom: 1px solid var(--line); font-size: 1.05rem; }
   .nav__links > a:not(.btn)::after { display: none; }
   .nav__cta { margin-top: 16px; padding: 15px 18px; font-size: 1rem; }
   .facts__row { grid-template-columns: 1fr; gap: 14px; }
   .steps { grid-template-columns: 1fr; }
-  .steps .step:nth-child(2), .js .steps .step:nth-child(2).reveal.is-in { transform: none; }
+  .steps .step:nth-child(2) { transform: none; margin: 0; }
 }
 
 @media (max-width: 600px) {
@@ -377,5 +383,4 @@ p { margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
-  .js .reveal { opacity: 1; transform: none; }
 }
