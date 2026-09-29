@@ -67,7 +67,7 @@ INICIO = {
                     "em Sertãozinho - SP. Atendimento em casa e no comércio."),
     "h1": "Refrigeração e assistência técnica em Sertãozinho",
     "sub": ("Ar-condicionado, câmara fria, geladeira, freezer, máquina de lavar e fogão, "
-            "na sua casa ou no seu comércio. E também aqueles pequenos reparos elétricos e hidráulicos."),
+            "na sua casa ou no seu comércio. E também pequenos reparos e manutenções residenciais."),
     "faq": [
         ("Vocês atendem em qual cidade?",
          "Atendemos em Sertãozinho - SP, em casas, apartamentos e comércios. Se você está em outra cidade da região, "
