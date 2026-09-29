@@ -500,3 +500,6 @@ a.channel:hover .channel__arr { transform: translate(3px, -3px); }
 .hero--page .waves__blue { fill: var(--bg); }
 .hero--page + .section { padding-top: 48px; }
 .prose { max-width: none; }
+
+/* sem a faixa de marcas, a onda do topo termina no branco da seção seguinte */
+.waves__blue { fill: var(--bg); }

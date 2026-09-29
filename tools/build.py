@@ -454,7 +454,6 @@ def pagina_inicio():
       </div>
 {ondas}
     </section>
-{marcas}
 
     <section class="section" id="servicos" aria-labelledby="servicos-t">
       <div class="wrap">
@@ -522,7 +521,7 @@ def pagina_inicio():
            ic_ok=ic("check-circle"), wa=ext(wa("Olá, Gabriel! Vim pelo site e gostaria de um orçamento.")),
            ic_wa=ic("whatsapp-logo"), form=formulario("f-inicio", titulo="Peça seu orçamento",
                                                       sub="Preencha e envie pelo WhatsApp."),
-           ondas=faixa_ondas(), marcas=faixa_marcas(), servicos=servicos, chips="\n          ".join(chips),
+           ondas=faixa_ondas(), servicos=servicos, chips="\n          ".join(chips),
            arr=ic("arrow-right"), depo=depoimentos(), faq=faq_html(I["faq"]), contato=contato(R))
 
     html = head(I["title"], I["description"], "", R, [ld_empresa(), ld_faq(I["faq"])],
@@ -603,7 +602,6 @@ def pagina_servico(s):
       <div class="wrap prose">{blocos}
       </div>
     </section>
-{marcas}
 {faq}
 
     <section class="section section--soft" id="orcamento" aria-labelledby="orc-t">
@@ -630,7 +628,7 @@ def pagina_servico(s):
   </main>
 """.format(ic_c=ic("caret-right"), nome=escape(s["nome"]), h1=escape(s["h1"]), intro=escape(s["intro"]),
            wa=ext(wa(s["wa"])), ic_wa=ic("whatsapp-logo"), icone=ic(s["icone"]), faz=faz, cidade=E["cidade"],
-           uf=E["uf"], ondas=faixa_ondas(), probs=probs, blocos=blocos, marcas=marcas,
+           uf=E["uf"], ondas=faixa_ondas(), probs=probs, blocos=blocos,
            faq=faq_html(s["faq"], "Dúvidas sobre " + s["nome"].lower(), "duvidas"),
            resp=E["responsavel"], form=formulario("f-" + s["slug"], OPCAO_POR_SERVICO[s["slug"]], "Descreva o problema"),
            outros=outros)
