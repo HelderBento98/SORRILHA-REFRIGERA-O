@@ -379,13 +379,13 @@ def depoimentos(lista=None, perfil=None):
     </script>""".format(nota=nota, link=link, cards="".join(cards), ic_l=ic("arrow-left"), ic_r=ic("arrow-right"))
 
 
-def faq_html(faq, titulo="Dúvidas frequentes", sid="duvidas"):
+def faq_html(faq, titulo="Dúvidas frequentes", sid="duvidas", fundo=""):
     itens = "\n".join("""          <details class="faq__item">
             <summary>{p}<span class="faq__icon" aria-hidden="true"></span></summary>
             <p>{r}</p>
           </details>""".format(p=escape(p), r=escape(r)) for p, r in faq)
     return """
-    <section class="section" id="{sid}" aria-labelledby="{sid}-t">
+    <section class="section{fundo}" id="{sid}" aria-labelledby="{sid}-t">
       <div class="wrap faq">
         <div class="faq__intro reveal">
           <p class="eyebrow">Dúvidas</p>
@@ -397,7 +397,7 @@ def faq_html(faq, titulo="Dúvidas frequentes", sid="duvidas"):
 {itens}
         </div>
       </div>
-    </section>""".format(sid=sid, titulo=escape(titulo), itens=itens,
+    </section>""".format(sid=sid, fundo=(" " + fundo) if fundo else "", titulo=escape(titulo), itens=itens,
                          wa=ext(wa("Olá, Gabriel! Vim pelo site e tenho uma dúvida.")), ic=ic("arrow-right"))
 
 
@@ -564,24 +564,7 @@ def pagina_inicio():
     </section>
 {depo}
 
-    <section class="section section--flush-top" id="casa-e-comercio" aria-label="Casa e comércio">
-      <div class="wrap duo">
-        <article class="duo__card reveal">
-          <p class="eyebrow">Para sua casa</p>
-          <h2>Conforto e eletrodomésticos funcionando</h2>
-          <p>Instalação e limpeza do ar-condicionado, conserto de geladeira, freezer, máquina de lavar e fogão, e os pequenos reparos que ficam esperando na lista.</p>
-          <a class="link-arrow" href="#servicos">Ver todos os serviços {arr}</a>
-        </article>
-        <article class="duo__card duo__card--dark reveal">
-          <p class="eyebrow eyebrow--light">Para seu comércio</p>
-          <h2>Câmara fria parada é mercadoria perdida</h2>
-          <p>Instalação, manutenção e conserto de câmaras frias, freezers e expositores para mercados, açougues, padarias e restaurantes.</p>
-          <a class="link-arrow link-arrow--light" href="camara-fria/">Câmara fria para comércios {arr}</a>
-        </article>
-      </div>
-    </section>
-
-    <section class="section section--soft" id="como-funciona" aria-labelledby="como-t">
+    <section class="section" id="como-funciona" aria-labelledby="como-t">
       <div class="wrap">
         <div class="section__head reveal">
           <p class="eyebrow">Como funciona</p>
@@ -603,7 +586,7 @@ def pagina_inicio():
            ic_wa=ic("whatsapp-logo"), form=formulario("f-inicio", titulo="Peça seu orçamento",
                                                       sub="Preencha e envie pelo WhatsApp."),
            ondas=faixa_ondas(), servicos=servicos,
-           arr=ic("arrow-right"), depo=depoimentos(), faq=faq_html(I["faq"]), contato=contato(R))
+           arr=ic("arrow-right"), depo=depoimentos(), faq=faq_html(I["faq"], fundo="section--soft"), contato=contato(R))
 
     html = head(I["title"], I["description"], "", R, [ld_empresa(), ld_faq(I["faq"])],
                 keywords="refrigeração Sertãozinho, ar-condicionado Sertãozinho, câmara fria Sertãozinho, "
