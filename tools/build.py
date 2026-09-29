@@ -15,7 +15,7 @@ from urllib.parse import quote
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from conteudo import (EMPRESA, SITE_URL, DEPOIMENTOS, GOOGLE_PERFIL, GOOGLE_NOTA, GOOGLE_TOTAL, MARCAS_AR, MARCAS_REFRIG, MARCAS_FOGAO, INICIO,  # noqa: E402
+from conteudo import (EMPRESA, SITE_URL, DEPOIMENTOS, GOOGLE_PERFIL, GOOGLE_NOTA, GOOGLE_TOTAL, MARCAS_TODAS, INICIO,  # noqa: E402
                       SERVICOS, OPCOES_FORM, OPCAO_POR_SERVICO)
 
 E = EMPRESA
@@ -249,37 +249,19 @@ def formulario(form_id, marcado="Ar-condicionado", titulo="Descreva o problema",
 
 
 def faixa_marcas():
-    """Marcas atendidas em 3 faixas que correm sem parar (efeito "marquee", como o do Spell UI).
-    Cada faixa repete a lista duas vezes e desliza metade do comprimento, então o fim encontra o começo.
+    """Faixa fina azul com todas as marcas passando sem parar (efeito "marquee", como o do Spell UI).
+    A lista aparece duas vezes e desliza metade do comprimento, então o fim encontra o começo.
     As bordas desbotam e passar o mouse pausa a faixa."""
-    grupos = [("Ar-condicionado", "snowflake", MARCAS_AR, ""),
-              ("Geladeiras e freezers", "fridge", MARCAS_REFRIG, " mq--reverse"),
-              ("Fogões", "oven", MARCAS_FOGAO, "")]
-    linhas = []
-    for titulo, icone, marcas, extra in grupos:
-        itens = "".join("<li>%s</li>" % escape(m) for m in marcas)
-        linhas.append("""
-        <div class="mq-row">
-          <p class="mq-row__label">{ic} {t}</p>
-          <div class="mq{extra}" role="group" aria-label="Marcas de {tl}">
-            <div class="mq__track">
-              <ul class="mq__group">{i}</ul>
-              <ul class="mq__group" aria-hidden="true">{i}</ul>
-            </div>
-          </div>
-        </div>""".format(ic=ic(icone), t=escape(titulo), tl=escape(titulo.lower()), extra=extra, i=itens))
+    itens = "".join("<li>%s</li>" % escape(m) for m in MARCAS_TODAS)
     return """
-    <section class="brands" id="marcas" aria-labelledby="marcas-t">
-      <div class="wrap brands__head reveal">
-        <div>
-          <p class="eyebrow eyebrow--light">Marcas</p>
-          <h2 id="marcas-t">Atendemos todas as marcas</h2>
+    <section class="brands" id="marcas" aria-label="Marcas atendidas">
+      <div class="mq">
+        <div class="mq__track">
+          <ul class="mq__group">{i}</ul>
+          <ul class="mq__group" aria-hidden="true">{i}</ul>
         </div>
-        <p class="brands__note">Assistência técnica independente. Não somos assistência autorizada dos fabricantes.</p>
       </div>
-      <div class="brands__rows">{linhas}
-      </div>
-    </section>""".format(linhas="".join(linhas))
+    </section>""".format(i=itens)
 
 
 def depoimentos(lista=None, perfil=None):

@@ -599,57 +599,38 @@ a.review__src:hover .ph { transform: translate(2px, -2px); }
 }
 @media (prefers-reduced-motion: reduce) { .reviews { scroll-behavior: auto; } }
 
-/* ---------- Marcas: faixas infinitas (efeito marquee do Spell UI, feito em CSS) ----------
-   --mq-duration: tempo de uma volta (padrão do Spell UI: 20s)
-   --mq-fade: quanto das bordas desbota (padrão do Spell UI: 10%)                         */
-.brands { background: var(--navy); color: var(--on-dark); padding: 88px 0 96px; overflow: clip; }
-.brands__head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px 40px; flex-wrap: wrap; margin-bottom: 40px; }
-.brands__head h2 { font-size: clamp(1.9rem, 3.5vw, 2.8rem); font-weight: 800; color: #fff; }
-.brands__note { color: var(--on-dark-muted); font-size: .92rem; max-width: 38ch; }
-.brands__rows { display: grid; gap: 6px; }
-.mq-row {
-  display: grid; grid-template-columns: 240px minmax(0, 1fr); align-items: center;
-  border-top: 1px solid var(--navy-line); padding-left: max(var(--gutter), calc((100vw - 1220px) / 2 + var(--gutter)));
-}
-.mq-row:last-child { border-bottom: 1px solid var(--navy-line); }
-.mq-row__label {
-  display: flex; align-items: center; gap: 10px; font-size: .8rem; font-weight: 700;
-  letter-spacing: .12em; text-transform: uppercase; color: #7cc6ea;
-}
-.mq-row__label > * { font-size: 20px; flex: none; }
-
+/* ---------- Marcas: faixa fina infinita (efeito marquee do Spell UI, feito em CSS) ----------
+   --mq-duration: tempo de uma volta · --mq-fade: quanto das bordas desbota (padrão Spell UI: 10%) */
+.brands { background: var(--navy); color: var(--on-dark); padding: 0; overflow: clip; }
 .mq {
-  --mq-duration: 20s; --mq-fade: 10%; --mq-gap: 48px;
-  display: flex; overflow: hidden; user-select: none; padding: 18px 0;
+  --mq-duration: 40s; --mq-fade: 10%; --mq-gap: 44px;
+  display: flex; overflow: hidden; user-select: none; padding: 16px 0;
   -webkit-mask: linear-gradient(90deg, transparent, #000 var(--mq-fade), #000 calc(100% - var(--mq-fade)), transparent);
           mask: linear-gradient(90deg, transparent, #000 var(--mq-fade), #000 calc(100% - var(--mq-fade)), transparent);
 }
 .mq__track { display: flex; flex: none; width: max-content; }
-.mq__group { display: flex; flex: none; gap: var(--mq-gap); padding-right: var(--mq-gap); }
+.mq__group { display: flex; align-items: center; flex: none; gap: var(--mq-gap); padding-right: var(--mq-gap); }
 .mq__group li {
-  font-size: clamp(1.4rem, 2.6vw, 2rem); font-weight: 700; letter-spacing: -.02em; white-space: nowrap;
-  color: #d5e5ef; transition: color .25s, opacity .25s;
+  font-size: 1.15rem; font-weight: 600; letter-spacing: -.01em; white-space: nowrap;
+  color: #d5e5ef; display: flex; align-items: center; gap: var(--mq-gap); transition: color .25s, opacity .25s;
 }
-.mq:hover li { opacity: .4; }
-.mq li:hover { opacity: 1; color: var(--coral); }
+/* ponto coral separando as marcas */
+.mq__group li::after { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--coral); opacity: .8; }
+.mq:hover li { opacity: .45; }
+.mq li:hover { opacity: 1; color: #fff; }
 
 @media (prefers-reduced-motion: no-preference) {
   .mq__track { animation: mq-scroll var(--mq-duration) linear infinite; }
-  .mq--reverse .mq__track { animation-direction: reverse; }
   .mq:hover .mq__track { animation-play-state: paused; }
   @keyframes mq-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 }
-/* sem animação: a lista quebra em linhas e a cópia some */
 @media (prefers-reduced-motion: reduce) {
-  .mq { -webkit-mask: none; mask: none; }
+  .mq { -webkit-mask: none; mask: none; padding-inline: var(--gutter); }
   .mq__track { width: auto; flex: 1; }
-  .mq__group { flex-wrap: wrap; row-gap: 8px; }
+  .mq__group { flex-wrap: wrap; justify-content: center; row-gap: 8px; }
   .mq__group[aria-hidden="true"] { display: none; }
 }
-
-@media (max-width: 800px) {
-  .brands { padding: 64px 0 72px; }
-  .mq-row { grid-template-columns: 1fr; padding-left: 0; padding-top: 18px; }
-  .mq-row__label { padding-inline: var(--gutter); }
-  .mq { --mq-gap: 32px; --mq-fade: 8%; padding: 10px 0 16px; }
+@media (max-width: 600px) {
+  .mq { --mq-gap: 28px; --mq-fade: 8%; padding: 13px 0; }
+  .mq__group li { font-size: 1rem; }
 }
