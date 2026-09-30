@@ -19,6 +19,9 @@ EMPRESA = {
     "telefone_link": "+5575999062183",
     "instagram": "https://www.instagram.com/sorrilha_refrigeracao/",
     "instagram_usuario": "@sorrilha_refrigeracao",
+    # CNPJ ou CPF que aparece no rodapé e nas páginas legais, ex.: "CNPJ 12.345.678/0001-90".
+    # Deixe "" enquanto não tiver; a linha some do site.
+    "documento": "",
 }
 
 # Endereço onde o site fica publicado (sem barra no final).

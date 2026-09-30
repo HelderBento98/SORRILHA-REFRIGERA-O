@@ -17,6 +17,7 @@ RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from conteudo import (EMPRESA, SITE_URL, DEPOIMENTOS, GOOGLE_PERFIL, GOOGLE_NOTA, GOOGLE_TOTAL, MARCAS_TODAS, INICIO,  # noqa: E402
                       SERVICOS, OPCOES_FORM, OPCAO_POR_SERVICO)
+import legal  # noqa: E402
 
 E = EMPRESA
 HOJE = date.today().isoformat()
@@ -209,7 +210,7 @@ def cabecalho(R, ativo=""):
            ic_list=ic("list"), ic_x=ic("x"))
 
 
-def formulario(form_id, marcado="Ar-condicionado", titulo="Descreva o problema", sub=""):
+def formulario(form_id, marcado="Ar-condicionado", titulo="Descreva o problema", sub="", R=""):
     ops = "\n".join('                <option%s>%s</option>' % (" selected" if o == marcado else "", escape(o)) for o in OPCOES_FORM)
     return """
         <form class="form js-wa-form" id="{fid}" action="https://wa.me/{num}" method="get" target="_blank" aria-labelledby="{fid}-t">
@@ -242,10 +243,11 @@ def formulario(form_id, marcado="Ar-condicionado", titulo="Descreva o problema",
               placeholder="Ex.: Ar-condicionado Samsung 12.000 BTUs pingando água no quarto."></textarea>
           </div>
           <button class="btn btn--primary btn--lg form__submit" type="submit">{ic_send} Enviar pelo WhatsApp</button>
-          <p class="form__note">Abre o WhatsApp com a mensagem pronta. Você confere antes de enviar.</p>
+          <p class="form__note">Abre o WhatsApp com a mensagem pronta. Você confere antes de enviar.
+            Nada fica salvo no site. <a href="{R}politica-de-privacidade/">Política de Privacidade</a></p>
         </form>""".format(fid=form_id, num=E["whatsapp"], ic_wa=ic("whatsapp-logo"), titulo=escape(titulo),
                           sub=('<p class="form__sub">%s</p>' % escape(sub)) if sub else "", ops=ops,
-                          ic_caret=ic("caret-down"), ic_send=ic("paper-plane-tilt"))
+                          ic_caret=ic("caret-down"), ic_send=ic("paper-plane-tilt"), R=R)
 
 
 def faixa_marcas():
@@ -451,8 +453,12 @@ def rodape(R):
       </div>
     </div>
     <div class="wrap footer__bottom">
-      <p>© {ano} {nome}. Todos os direitos reservados.</p>
-      <p>As marcas citadas pertencem aos seus fabricantes.</p>
+      <p>© {ano} {nome}{doc}. Todos os direitos reservados.</p>
+      <nav class="footer__legal" aria-label="Informações legais">
+        <a href="{R}politica-de-privacidade/">Política de Privacidade</a>
+        <a href="{R}termos-de-uso/">Termos de Uso</a>
+      </nav>
+      <p class="footer__marcas">Assistência técnica independente. As marcas citadas pertencem aos seus fabricantes.</p>
     </div>
   </footer>
 
@@ -479,7 +485,7 @@ def rodape(R):
 </html>
 """.format(R=R, nome=E["nome"], cidade=E["cidade"], uf=E["uf"], links=links, resp=E["responsavel"],
            tel=E["telefone_link"], tel_ex=E["telefone_exibicao"], insta=ext(E["instagram"]),
-           insta_u=E["instagram_usuario"], ano=date.today().year,
+           insta_u=E["instagram_usuario"], ano=date.today().year, doc=(" · " + E["documento"]) if E.get("documento") else "",
            wa=ext(wa("Olá, Gabriel! Vim pelo site e gostaria de um orçamento.")), ic_wa=ic("whatsapp-logo"),
            num=E["whatsapp"])
 
@@ -585,7 +591,7 @@ def pagina_inicio():
   </main>
 """.format(ic_pin=ic("map-pin"), cidade=E["cidade"], uf=E["uf"], h1=escape(I["h1"]), sub=escape(I["sub"]),
            ic_ok=ic("check-circle"), wa=ext(wa("Olá, Gabriel! Vim pelo site e gostaria de um orçamento.")),
-           ic_wa=ic("whatsapp-logo"), form=formulario("f-inicio", titulo="Peça seu orçamento",
+           ic_wa=ic("whatsapp-logo"), form=formulario("f-inicio", R="", titulo="Peça seu orçamento",
                                                       sub="Preencha e envie pelo WhatsApp."),
            ondas=faixa_ondas(), servicos=servicos,
            arr=ic("arrow-right"), depo=depoimentos(), marcas=faixa_marcas(), faq=faq_html(I["faq"], fundo="section--soft"), contato=contato(R))
@@ -696,13 +702,54 @@ def pagina_servico(s):
            wa=ext(wa(s["wa"])), ic_wa=ic("whatsapp-logo"), icone=ic(s["icone"]), faz=faz, cidade=E["cidade"],
            uf=E["uf"], ondas=faixa_ondas(), probs=probs, blocos=blocos,
            faq=faq_html(s["faq"], "Dúvidas sobre " + s["nome"].lower(), "duvidas"),
-           resp=E["responsavel"], form=formulario("f-" + s["slug"], OPCAO_POR_SERVICO[s["slug"]], "Descreva o problema"),
+           resp=E["responsavel"], form=formulario("f-" + s["slug"], OPCAO_POR_SERVICO[s["slug"]], "Descreva o problema", R=R),
            outros=outros)
 
     html = head(s["title"], s["description"], s["slug"] + "/", R,
                 [ld_servico(s), ld_breadcrumb(s), ld_faq(s["faq"])], keywords=s["keywords"])
     html += cabecalho(R, s["slug"]) + corpo + rodape(R)
     return html
+
+
+def pagina_legal(slug, titulo, descricao, secoes):
+    R = "../"
+    blocos = []
+    for n, (t, partes) in enumerate(secoes, 1):
+        html = []
+        for p in partes:
+            if isinstance(p, tuple) and p[0] == "lista":
+                html.append("<ul>%s</ul>" % "".join("<li>%s</li>" % escape(i) for i in p[1]))
+            else:
+                html.append("<p>%s</p>" % escape(p))
+        blocos.append("""
+        <section class="legal__sec" id="s{n}">
+          <h2><span>{n}.</span> {t}</h2>
+          {h}
+        </section>""".format(n=n, t=escape(t), h="\n          ".join(html)))
+    indice = "".join('<li><a href="#s%d">%s</a></li>' % (n, escape(t)) for n, (t, _) in enumerate(secoes, 1))
+    corpo = """
+  <main id="conteudo">
+    <section class="hero hero--page hero--legal">
+      <div class="wrap">
+        <nav class="crumbs" aria-label="Você está em"><a href="../">Início</a> {ic_c} <span aria-current="page">{titulo}</span></nav>
+        <h1 class="hero__title hero__title--page">{titulo}</h1>
+        <p class="hero__sub">Última atualização: {data}</p>
+      </div>
+    </section>
+    <div class="wrap legal">
+      <aside class="legal__toc" aria-label="Nesta página">
+        <p class="legal__toc-t">Nesta página</p>
+        <ol>{indice}</ol>
+      </aside>
+      <article class="legal__body">{blocos}
+        <p class="legal__contact">Dúvidas sobre este documento? <a {wa}>Fale com a gente no WhatsApp</a>.</p>
+      </article>
+    </div>
+  </main>
+""".format(ic_c=ic("caret-right"), titulo=escape(titulo), data=legal.ATUALIZADO_EM, indice=indice, blocos="".join(blocos),
+           wa=ext(wa("Olá, Gabriel! Tenho uma dúvida sobre a %s do site." % titulo.lower())))
+    html = head("%s | %s" % (titulo, E["nome"]), descricao, slug + "/", R, [])
+    return html + cabecalho(R) + corpo + rodape(R)
 
 
 def pagina_404():
@@ -742,8 +789,17 @@ def main():
     for s in SERVICOS:
         salvar(os.path.join(s["slug"], "index.html"), pagina_servico(s))
     salvar("404.html", pagina_404())
+    salvar("politica-de-privacidade/index.html", pagina_legal(
+        "politica-de-privacidade", "Política de Privacidade",
+        "Como a %s trata dados pessoais no site e no atendimento pelo WhatsApp, conforme a LGPD." % E["nome"],
+        legal.privacidade(E)))
+    salvar("termos-de-uso/index.html", pagina_legal(
+        "termos-de-uso", "Termos de Uso",
+        "Condições de uso do site da %s, garantia dos serviços e informações sobre marcas." % E["nome"],
+        legal.termos(E)))
 
-    urls = [("", "1.0")] + [(s["slug"] + "/", "0.8") for s in SERVICOS]
+    urls = [("", "1.0")] + [(s["slug"] + "/", "0.8") for s in SERVICOS] + \
+        [("politica-de-privacidade/", "0.2"), ("termos-de-uso/", "0.2")]
     sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     sitemap += "".join("  <url><loc>%s/%s</loc><lastmod>%s</lastmod><priority>%s</priority></url>\n" % (SITE_URL, u, HOJE, p)
                        for u, p in urls)
