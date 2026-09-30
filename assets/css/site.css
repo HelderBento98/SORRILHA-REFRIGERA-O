@@ -591,23 +591,22 @@ a.review__src:hover .ph { transform: translate(2px, -2px); }
 
 /* ---------- Marcas: faixa fina infinita (efeito marquee do Spell UI, feito em CSS) ----------
    --mq-duration: tempo de uma volta · --mq-fade: quanto das bordas desbota (padrão Spell UI: 10%) */
-.brands { background: var(--navy); color: var(--on-dark); padding: 0; overflow: clip; }
+.brands { background: var(--bg); padding: 8px 0; overflow: clip; }
 .mq {
-  --mq-duration: 110s; --mq-fade: 10%; --mq-gap: 44px;
-  display: flex; overflow: hidden; user-select: none; padding: 16px 0;
+  --mq-duration: 110s; --mq-fade: 10%; --mq-gap: 60px;
+  display: flex; overflow: hidden; user-select: none; padding: 22px 0;
   -webkit-mask: linear-gradient(90deg, transparent, #000 var(--mq-fade), #000 calc(100% - var(--mq-fade)), transparent);
           mask: linear-gradient(90deg, transparent, #000 var(--mq-fade), #000 calc(100% - var(--mq-fade)), transparent);
 }
 .mq__track { display: flex; flex: none; width: max-content; }
 .mq__group { display: flex; align-items: center; flex: none; gap: var(--mq-gap); padding-right: var(--mq-gap); }
+/* marcas em cinza claro; ao passar o mouse a faixa para, a marca escurece e cresce um pouco */
 .mq__group li {
-  font-size: 1.15rem; font-weight: 600; letter-spacing: -.01em; white-space: nowrap;
-  color: #d5e5ef; display: flex; align-items: center; gap: var(--mq-gap); transition: color .25s, opacity .25s;
+  font-size: 1.3rem; font-weight: 700; letter-spacing: -.01em; white-space: nowrap;
+  color: #b3bec7; transform-origin: center; cursor: default;
+  transition: color .25s ease, transform .3s var(--ease);
 }
-/* ponto coral separando as marcas */
-.mq__group li::after { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--coral); opacity: .8; }
-.mq:hover li { opacity: .45; }
-.mq li:hover { opacity: 1; color: #fff; }
+.mq li:hover { color: #4a5864; transform: scale(1.12); }
 
 @media (prefers-reduced-motion: no-preference) {
   .mq__track { animation: mq-scroll var(--mq-duration) linear infinite; }
@@ -621,8 +620,8 @@ a.review__src:hover .ph { transform: translate(2px, -2px); }
   .mq__group[aria-hidden="true"] { display: none; }
 }
 @media (max-width: 600px) {
-  .mq { --mq-gap: 28px; --mq-fade: 8%; padding: 13px 0; }
-  .mq__group li { font-size: 1rem; }
+  .mq { --mq-gap: 36px; --mq-fade: 8%; padding: 16px 0; }
+  .mq__group li { font-size: 1.1rem; }
 }
 
 /* ---------- Páginas legais (privacidade e termos) ---------- */
