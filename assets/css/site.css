@@ -129,7 +129,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .nav__toggle { display: none; padding: 8px; margin-right: -8px; line-height: 0; font-size: 30px; color: var(--navy); text-decoration: none; }
 
 /* ---------- Hero ---------- */
-.hero { position: relative; background: linear-gradient(180deg, #fff 0%, var(--blue-50) 100%); padding: 64px 0 150px; overflow: clip; }
+.hero { position: relative; background: linear-gradient(180deg, #fff 0%, var(--blue-50) 100%); padding: 64px 0 96px; overflow: clip; }
 .hero__grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 56px; align-items: center; }
 .hero__title { font-size: clamp(2.3rem, 5vw, 4.1rem); font-weight: 800; color: var(--navy); letter-spacing: -.035em; line-height: 1.02; }
 .hero__sub { margin-top: 22px; font-size: 1.18rem; color: var(--muted); max-width: 52ch; }
@@ -138,7 +138,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .hero__points .ph { color: var(--blue-ink); font-size: 1.25rem; }
 .hero__ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
 
-.hero--page { padding: 44px 0 140px; }
+.hero--page { padding: 44px 0 80px; }
 .hero__grid--page { grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); align-items: start; }
 .hero__title--page { font-size: clamp(2.1rem, 4.4vw, 3.5rem); }
 .crumbs { display: flex; align-items: center; gap: 6px; font-size: .92rem; color: var(--muted); margin-bottom: 20px; }
@@ -153,11 +153,8 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .scope li .ph { color: #fff; background: var(--coral); border-radius: 50%; font-size: 13px; padding: 4px; margin-top: 1px; }
 .scope__foot { font-size: .9rem; color: var(--muted); padding-top: 14px; border-top: 1px solid var(--line); }
 
-/* ondas da marca (mesmas do cartão de visita) */
-.waves { position: absolute; left: 0; right: 0; bottom: -1px; height: 120px; pointer-events: none; }
-.waves svg { width: 100%; height: 100%; display: block; }
-.waves__coral { fill: var(--coral); }
-.waves__blue { fill: var(--navy); }
+/* faixa reta coral na base do topo */
+.hero-band { position: absolute; left: 0; right: 0; bottom: 0; height: 14px; background: var(--coral); pointer-events: none; }
 
 /* ---------- Formulário ---------- */
 .form {
@@ -399,9 +396,6 @@ a.channel:hover .channel__arr { transform: translate(3px, -3px); }
     .nav { animation: nav-shadow linear both; animation-timeline: scroll(root); animation-range: 0 140px; }
     @keyframes nav-shadow { from { box-shadow: none; } to { box-shadow: 0 10px 30px -22px rgba(15, 53, 80, .6); } }
 
-    /* ondas do topo sobem devagar enquanto a página rola */
-    .waves svg { animation: waves-drift linear both; animation-timeline: scroll(root); animation-range: 0 600px; }
-    @keyframes waves-drift { to { transform: translateY(24px) scaleY(.85); } }
 
     .fab { animation: fab-in linear both; animation-timeline: scroll(root); animation-range: 380px 480px; }
     @keyframes fab-in { from { opacity: 0; transform: translateY(20px) scale(.85); visibility: hidden; } }
@@ -457,11 +451,11 @@ a.channel:hover .channel__arr { transform: translate(3px, -3px); }
   body { font-size: 16px; }
   :root { --gutter: 18px; }
   .topbar__right { gap: 16px; font-size: .82rem; }
-  .hero { padding: 40px 0 110px; }
-  .hero--page { padding: 28px 0 110px; }
+  .hero { padding: 40px 0 64px; }
+  .hero--page { padding: 28px 0 56px; }
   .hero__sub { font-size: 1.06rem; }
   .hero__ctas .btn { width: 100%; }
-  .waves { height: 80px; }
+  .hero-band { height: 10px; }
   .form { padding: 22px; }
   .form__row { grid-template-columns: 1fr; }
   .section { padding: 64px 0; }
@@ -487,13 +481,9 @@ a.channel:hover .channel__arr { transform: translate(3px, -3px); }
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
 }
 
-/* nas páginas de serviço, a onda termina no branco da seção seguinte */
-.hero--page .waves__blue { fill: var(--bg); }
 .hero--page + .section { padding-top: 48px; }
 .prose { max-width: none; }
 
-/* a onda do topo termina no branco da seção seguinte */
-.waves__blue { fill: var(--bg); }
 .section--flush-top { padding-top: 0; }
 
 /* ---------- Ícones em SVG (mesmo tamanho dos ícones de fonte) ---------- */
