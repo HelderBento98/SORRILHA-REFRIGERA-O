@@ -664,3 +664,17 @@ a.review__src:hover .ph { transform: translate(2px, -2px); }
   .legal { grid-template-columns: 1fr; gap: 28px; padding-block: 32px 72px; }
   .legal__toc { position: static; }
 }
+
+/* ---------- Aviso de cookies (só aparece com a medição de anúncios ligada) ---------- */
+.cookies {
+  position: fixed; left: 16px; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 80;
+  max-width: 560px; margin: 0 auto; background: #fff; color: var(--text);
+  border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 24px 50px -20px rgba(15, 53, 80, .55);
+  padding: 18px 20px; display: flex; gap: 14px 18px; align-items: center; flex-wrap: wrap;
+}
+.cookies[hidden] { display: none; }
+.cookies p { flex: 1 1 260px; font-size: .92rem; line-height: 1.45; color: var(--muted); }
+.cookies a { color: var(--blue-ink); font-weight: 600; }
+.cookies__btns { display: flex; gap: 8px; }
+.footer__legal a[hidden] { display: none; }
+@media (max-width: 600px) { .cookies { left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); padding: 14px 16px; } .cookies__btns { width: 100%; } .cookies__btns .btn { flex: 1; } }

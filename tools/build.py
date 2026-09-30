@@ -16,12 +16,13 @@ from urllib.parse import quote
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from conteudo import (EMPRESA, SITE_URL, DEPOIMENTOS, GOOGLE_PERFIL, GOOGLE_NOTA, GOOGLE_TOTAL, MARCAS_TODAS, INICIO,  # noqa: E402
-                      SERVICOS, OPCOES_FORM, OPCAO_POR_SERVICO)
+                      SERVICOS, OPCOES_FORM, OPCAO_POR_SERVICO, RASTREAMENTO, VERIFICACAO, AREA_ATENDIMENTO)
 import legal  # noqa: E402
 
 E = EMPRESA
 HOJE = date.today().isoformat()
-VERSAO_CSS = "3"
+VERSAO_CSS = "4"
+RASTREIO_LIGADO = any((RASTREAMENTO.get(k) or "").strip() for k in ("ga4", "google_ads", "meta_pixel"))
 
 
 def wa(msg):
@@ -73,7 +74,7 @@ def ld_empresa():
         "logo": SITE_URL + "/assets/img/logo.png",
         "telephone": E["telefone_link"],
         "address": {"@type": "PostalAddress", "addressLocality": E["cidade"], "addressRegion": E["uf"], "addressCountry": "BR"},
-        "areaServed": {"@type": "City", "name": "%s - %s" % (E["cidade"], E["uf"])},
+        "areaServed": [{"@type": "City", "name": "%s - %s" % (c, E["uf"])} for c in AREA_ATENDIMENTO],
         "sameAs": [E["instagram"]],
         "description": INICIO["description"],
         "hasOfferCatalog": {
@@ -122,7 +123,44 @@ def ld_breadcrumb(s):
 # ---------------------------------------------------------------------------
 # Partes comuns
 # ---------------------------------------------------------------------------
-def head(title, description, caminho, R, lds, keywords=""):
+def verificacao_html():
+    out = []
+    if VERIFICACAO.get("google"):
+        out.append('<meta name="google-site-verification" content="%s">' % escape(VERIFICACAO["google"]))
+    if VERIFICACAO.get("meta"):
+        out.append('<meta name="facebook-domain-verification" content="%s">' % escape(VERIFICACAO["meta"]))
+    return "\n  ".join(out)
+
+
+def config_js(R):
+    return json.dumps({
+        "whatsapp": E["whatsapp"],
+        "raiz": R,
+        "rastreio": RASTREIO_LIGADO,
+        "adsConversao": RASTREAMENTO.get("google_ads_conversao", ""),
+        "metaPixel": RASTREAMENTO.get("meta_pixel", ""),
+    }, ensure_ascii=False)
+
+
+def tags_google():
+    """Tag do Google (GA4 + Google Ads) com Modo de Consentimento: começa negado e só
+    grava cookies depois que a pessoa aceita no aviso."""
+    ids = [RASTREAMENTO.get(k, "").strip() for k in ("ga4", "google_ads")]
+    ids = [i for i in ids if i]
+    if not ids:
+        return ""
+    configs = "".join("gtag('config','%s');" % i for i in ids)
+    return ("""<script>
+    window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
+    var c = null; try { c = localStorage.getItem('sorrilha-consent'); } catch (e) {}
+    var g = c === 'aceito' ? 'granted' : 'denied';
+    gtag('consent', 'default', {ad_storage: g, ad_user_data: g, ad_personalization: g, analytics_storage: g, wait_for_update: 500});
+    gtag('js', new Date()); %s
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=%s"></script>""" % (configs, ids[0]))
+
+
+def head(title, description, caminho, R, lds, keywords="", servico="inicio"):
     url = SITE_URL + "/" + caminho
     kw = '\n  <meta name="keywords" content="%s">' % escape(keywords) if keywords else ""
     return """<!doctype html>
@@ -153,13 +191,18 @@ def head(title, description, caminho, R, lds, keywords=""):
   <link rel="stylesheet" href="{R}assets/icons/icons.css">
   <link rel="stylesheet" href="{R}assets/css/site.css?v={v}">
   {lds}
+  {verif}
+  <script>window.SORRILHA = {cfg};</script>
+  {tags}
+  <script src="{R}assets/js/site.js?v={v}" defer></script>
 </head>
-<body>
+<body data-servico="{servico}">
   <a class="skip" href="#conteudo">Pular para o conteúdo</a>
   <span id="menu" class="menu-anchor" aria-hidden="true"></span>
   <div class="progress" aria-hidden="true"></div>
 """.format(title=escape(title), desc=escape(description), kw=kw, url=escape(url), cidade=E["cidade"],
-           nome=E["nome"], site=SITE_URL, R=R, v=VERSAO_CSS, lds="\n  ".join(jsonld(x) for x in lds))
+           nome=E["nome"], site=SITE_URL, R=R, v=VERSAO_CSS, lds="\n  ".join(jsonld(x) for x in lds),
+           verif=verificacao_html(), cfg=config_js(R), tags=tags_google(), servico=escape(servico))
 
 
 def cabecalho(R, ativo=""):
@@ -417,13 +460,14 @@ def contato(R):
           <li><a class="channel" {wa}>{ic_wa}<span><small>WhatsApp</small><strong>{tel_ex}</strong></span>{arr}</a></li>
           <li><a class="channel" href="tel:{tel}">{ic_tel}<span><small>Ligar</small><strong>{tel_ex}</strong></span>{arr}</a></li>
           <li><a class="channel" {insta}>{ic_insta}<span><small>Instagram</small><strong>{insta_u}</strong></span>{arr}</a></li>
-          <li><div class="channel channel--static">{ic_pin}<span><small>Área de atendimento</small><strong>{cidade} - {uf}</strong></span></div></li>
+          <li><div class="channel channel--static">{ic_pin}<span><small>Área de atendimento</small><strong>{area}</strong></span></div></li>
         </ul>
       </div>
     </section>""".format(resp=E["responsavel"], wa=ext(wa("Olá, Gabriel! Vim pelo site e gostaria de um orçamento.")),
                          ic_wa=ic("whatsapp-logo"), tel_ex=E["telefone_exibicao"], tel=E["telefone_link"],
                          ic_tel=ic("phone"), insta=ext(E["instagram"]), ic_insta=ic("instagram-logo"),
                          insta_u=E["instagram_usuario"], ic_pin=ic("map-pin"), cidade=E["cidade"], uf=E["uf"],
+                         area=escape(", ".join(AREA_ATENDIMENTO)) + " - " + E["uf"],
                          arr=ic("arrow-up-right", "channel__arr"))
 
 
@@ -448,7 +492,7 @@ def rodape(R):
           <li>{resp}</li>
           <li><a href="tel:{tel}">{tel_ex}</a> (WhatsApp e ligação)</li>
           <li><a {insta}>{insta_u}</a></li>
-          <li>{cidade} - {uf}</li>
+          <li>Atendimento: {area}</li>
         </ul>
       </div>
     </div>
@@ -456,7 +500,7 @@ def rodape(R):
       <p>© {ano} {nome}{doc}. Todos os direitos reservados.</p>
       <nav class="footer__legal" aria-label="Informações legais">
         <a href="{R}politica-de-privacidade/">Política de Privacidade</a>
-        <a href="{R}termos-de-uso/">Termos de Uso</a>
+        <a href="{R}termos-de-uso/">Termos de Uso</a>{cookies}
       </nav>
       <p class="footer__marcas">Assistência técnica independente. As marcas citadas pertencem aos seus fabricantes.</p>
     </div>
@@ -464,30 +508,14 @@ def rodape(R):
 
   <a class="fab" {wa} aria-label="Chamar no WhatsApp">{ic_wa}</a>
 
-  <script>
-    /* Junta os campos do formulário numa mensagem e abre o WhatsApp.
-       Sem este script o formulário continua funcionando e envia só a descrição. */
-    document.querySelectorAll('.js-wa-form').forEach(function (f) {{
-      f.addEventListener('submit', function (e) {{
-        e.preventDefault();
-        var linhas = ['Olá, Gabriel! Vim pelo site.'];
-        f.querySelectorAll('[data-campo]').forEach(function (c) {{
-          var v = c.value.trim(); if (v) linhas.push(c.getAttribute('data-campo') + ': ' + v);
-        }});
-        var a = document.createElement('a');
-        a.href = 'https://wa.me/{num}?text=' + encodeURIComponent(linhas.join('\\n'));
-        a.target = '_blank'; a.rel = 'noopener';
-        document.body.appendChild(a); a.click(); a.remove();
-      }});
-    }});
-  </script>
 </body>
 </html>
 """.format(R=R, nome=E["nome"], cidade=E["cidade"], uf=E["uf"], links=links, resp=E["responsavel"],
            tel=E["telefone_link"], tel_ex=E["telefone_exibicao"], insta=ext(E["instagram"]),
            insta_u=E["instagram_usuario"], ano=date.today().year, doc=(" · " + E["documento"]) if E.get("documento") else "",
            wa=ext(wa("Olá, Gabriel! Vim pelo site e gostaria de um orçamento.")), ic_wa=ic("whatsapp-logo"),
-           num=E["whatsapp"])
+           cookies=('\n        <a href="#" class="js-cookies" hidden>Preferências de cookies</a>' if RASTREIO_LIGADO else ""),
+           area=escape(", ".join(AREA_ATENDIMENTO)) + " - " + E["uf"])
 
 
 def faixa_ondas():
@@ -706,7 +734,7 @@ def pagina_servico(s):
            outros=outros)
 
     html = head(s["title"], s["description"], s["slug"] + "/", R,
-                [ld_servico(s), ld_breadcrumb(s), ld_faq(s["faq"])], keywords=s["keywords"])
+                [ld_servico(s), ld_breadcrumb(s), ld_faq(s["faq"])], keywords=s["keywords"], servico=s["slug"])
     html += cabecalho(R, s["slug"]) + corpo + rodape(R)
     return html
 
@@ -792,7 +820,7 @@ def main():
     salvar("politica-de-privacidade/index.html", pagina_legal(
         "politica-de-privacidade", "Política de Privacidade",
         "Como a %s trata dados pessoais no site e no atendimento pelo WhatsApp, conforme a LGPD." % E["nome"],
-        legal.privacidade(E)))
+        legal.privacidade(E, RASTREAMENTO)))
     salvar("termos-de-uso/index.html", pagina_legal(
         "termos-de-uso", "Termos de Uso",
         "Condições de uso do site da %s, garantia dos serviços e informações sobre marcas." % E["nome"],
@@ -805,6 +833,12 @@ def main():
                        for u, p in urls)
     sitemap += "</urlset>\n"
     salvar("sitemap.xml", sitemap)
+    host = SITE_URL.split("://", 1)[-1].split("/", 1)[0]
+    cname = os.path.join(RAIZ, "CNAME")
+    if "github.io" not in host:
+        salvar("CNAME", host + "\n")
+    elif os.path.exists(cname):
+        os.remove(cname)
     salvar("robots.txt", "User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\n" % SITE_URL)
 
     # lista de ícones usados (para gerar o subconjunto da fonte de ícones)

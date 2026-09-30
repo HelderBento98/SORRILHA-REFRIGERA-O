@@ -20,9 +20,48 @@ def _identificacao(E):
         E["nome"], E["responsavel"], doc, E["cidade"], E["uf"])
 
 
-def privacidade(E):
-    """Lista de (título, [parágrafos ou ("lista", [itens])])."""
+def privacidade(E, R=None):
+    """Lista de (título, [parágrafos ou ("lista", [itens])]).
+    R = dicionário RASTREAMENTO do conteudo.py. Se tiver algum código preenchido,
+    os trechos sobre cookies, medição e compartilhamento mudam para refletir isso."""
     ident = _identificacao(E)
+    R = R or {}
+    google = bool((R.get("ga4") or "").strip() or (R.get("google_ads") or "").strip())
+    meta = bool((R.get("meta_pixel") or "").strip())
+    rastreio = google or meta
+    ferramentas = []
+    if (R.get("ga4") or "").strip():
+        ferramentas.append("Google Analytics, para contar visitas e ver quais páginas são mais vistas")
+    if (R.get("google_ads") or "").strip():
+        ferramentas.append("Google Ads, para saber quais anúncios do Google trouxeram contatos")
+    if meta:
+        ferramentas.append("Pixel da Meta, para saber quais anúncios do Instagram e do Facebook trouxeram contatos")
+
+    if rastreio:
+        resumo_cookie = ("Só usamos cookies de medição se você aceitar no aviso que aparece na primeira visita. "
+                         "Sem aceite, nenhum cookie de medição é gravado.")
+        sec_cookies = ("Cookies", [
+            "Cookies são pequenos arquivos que o navegador guarda. Este site usa cookies apenas se você clicar em "
+            "\"Aceitar\" no aviso de cookies, para:",
+            ("lista", ferramentas),
+            "Essas ferramentas registram dados como páginas visitadas, tipo de aparelho, cidade aproximada e cliques nos botões de "
+            "contato. Não identificam você pelo nome. Se você recusar, o Google pode receber apenas sinais técnicos sem cookies, "
+            "sem identificação, e o Pixel da Meta não é carregado.",
+            "Você pode mudar sua escolha a qualquer momento no link \"Preferências de cookies\", no rodapé, ou apagando os "
+            "cookies no seu navegador. A escolha fica guardada no seu próprio navegador.",
+            "Base legal: consentimento (art. 7º, inciso I, da LGPD).",
+        ])
+        extra_compart = [c for c in [
+            "Google, se você aceitar os cookies (Google Analytics e Google Ads);" if google else None,
+            "Meta, se você aceitar os cookies (Pixel da Meta);" if meta else None,
+        ] if c]
+    else:
+        resumo_cookie = "Este site não usa cookies nem ferramentas de estatística ou de anúncios."
+        sec_cookies = ("Cookies", [
+            "Este site não usa cookies, nem próprios nem de terceiros. Por isso não há aviso de cookies para aceitar.",
+        ])
+        extra_compart = []
+
     return [
         ("Quem somos", [
             "Esta política explica como o site da %s trata informações pessoais. "
@@ -31,10 +70,11 @@ def privacidade(E):
         ]),
         ("Resumo", [
             ("lista", [
-                "Este site não usa cookies nem ferramentas de estatística ou de anúncios.",
+                resumo_cookie,
                 "O formulário de orçamento não guarda nada: ele apenas abre o WhatsApp com a sua mensagem pronta, e você decide se envia.",
                 "Os dados que você manda pelo WhatsApp são usados só para responder, agendar e fazer o serviço.",
-                "Não vendemos nem compartilhamos seus dados para marketing.",
+                ("Não vendemos seus dados. Os dados de medição só vão para o Google e a Meta se você aceitar os cookies."
+                 if rastreio else "Não vendemos nem compartilhamos seus dados para marketing."),
             ]),
         ]),
         ("Quais dados tratamos e para quê", [
@@ -58,6 +98,7 @@ def privacidade(E):
             ("lista", [
                 "WhatsApp (Meta), por onde a conversa acontece, sujeito à política de privacidade do próprio WhatsApp;",
                 "GitHub, que hospeda este site;",
+            ] + extra_compart + [
                 "autoridades públicas, somente quando houver obrigação legal ou ordem judicial.",
             ]),
             "Alguns desses serviços podem armazenar dados fora do Brasil, conforme as regras de transferência internacional da LGPD.",
@@ -79,9 +120,7 @@ def privacidade(E):
             "Para exercer esses direitos, mande uma mensagem pelo WhatsApp %s. Respondemos no menor prazo possível. "
             "Se não ficar satisfeito, você também pode reclamar à Autoridade Nacional de Proteção de Dados (ANPD), pelo site gov.br/anpd." % E["telefone_exibicao"],
         ]),
-        ("Cookies", [
-            "Este site não usa cookies, nem próprios nem de terceiros. Por isso não há aviso de cookies para aceitar.",
-        ]),
+        sec_cookies,
         ("Segurança", [
             "O site é servido com conexão criptografada (HTTPS). Os dados recebidos pelo WhatsApp ficam no aparelho usado no "
             "atendimento, protegido por senha, e só são acessados por quem presta o serviço.",

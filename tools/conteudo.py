@@ -24,6 +24,33 @@ EMPRESA = {
     "documento": "",
 }
 
+# ---------------------------------------------------------------------------
+# MEDIÇÃO DE ANÚNCIOS (deixe "" para desligar)
+# Enquanto tudo estiver vazio: o site não usa cookies, não mostra aviso de cookies
+# e a Política de Privacidade diz isso. Ao preencher qualquer código, o build liga
+# o aviso de cookies e atualiza a política sozinho.
+# ---------------------------------------------------------------------------
+RASTREAMENTO = {
+    # Google Analytics 4 > Administrador > Fluxos de dados > "ID da métrica", ex.: "G-ABC123XYZ"
+    "ga4": "",
+    # Google Ads > Metas > Conversões > "Tag do Google": o ID da conta, ex.: "AW-123456789"
+    "google_ads": "",
+    # Google Ads > a conversão "Contato pelo site" > "rótulo" completo, ex.: "AW-123456789/AbCdEfGh"
+    "google_ads_conversao": "",
+    # Meta (Facebook/Instagram) > Gerenciador de Eventos > ID do Pixel (só números), ex.: "1234567890123456"
+    "meta_pixel": "",
+}
+
+# Verificação de propriedade (só o valor do content="..."), para Search Console e Meta Business.
+VERIFICACAO = {
+    "google": "",   # Search Console > método "Tag HTML"
+    "meta": "",     # Meta Business > Segurança da marca > Domínios > "Metatag"
+}
+
+# Cidades atendidas. Coloque só onde o Gabriel realmente vai, ex.: ["Sertãozinho", "Pontal", "Barrinha"].
+# Aparece no rodapé e nos dados que o Google lê sobre a empresa.
+AREA_ATENDIMENTO = ["Sertãozinho"]
+
 # Endereço onde o site fica publicado (sem barra no final).
 # Quando tiver domínio próprio, troque aqui, ex.: "https://sorrilharefrigeracao.com.br"
 SITE_URL = "https://helderbento98.github.io/SORRILHA-REFRIGERA-O"

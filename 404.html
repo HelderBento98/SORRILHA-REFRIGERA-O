@@ -24,10 +24,14 @@
   <link rel="apple-touch-icon" href="/SORRILHA-REFRIGERA-O/assets/img/apple-touch-icon.png">
   <link rel="preload" href="/SORRILHA-REFRIGERA-O/assets/fonts/outfit-variable.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/SORRILHA-REFRIGERA-O/assets/icons/icons.css">
-  <link rel="stylesheet" href="/SORRILHA-REFRIGERA-O/assets/css/site.css?v=3">
+  <link rel="stylesheet" href="/SORRILHA-REFRIGERA-O/assets/css/site.css?v=4">
   
+  
+  <script>window.SORRILHA = {"whatsapp": "5575999062183", "raiz": "/SORRILHA-REFRIGERA-O/", "rastreio": false, "adsConversao": "", "metaPixel": ""};</script>
+  
+  <script src="/SORRILHA-REFRIGERA-O/assets/js/site.js?v=4" defer></script>
 </head>
-<body>
+<body data-servico="inicio">
   <a class="skip" href="#conteudo">Pular para o conteúdo</a>
   <span id="menu" class="menu-anchor" aria-hidden="true"></span>
   <div class="progress" aria-hidden="true"></div>
@@ -108,7 +112,7 @@
           <li>Gabriel Sorrilha</li>
           <li><a href="tel:+5575999062183">(75) 99906-2183</a> (WhatsApp e ligação)</li>
           <li><a href="https://www.instagram.com/sorrilha_refrigeracao/" target="_blank" rel="noopener">@sorrilha_refrigeracao</a></li>
-          <li>Sertãozinho - SP</li>
+          <li>Atendimento: Sertãozinho - SP</li>
         </ul>
       </div>
     </div>
@@ -124,22 +128,5 @@
 
   <a class="fab" href="https://wa.me/5575999062183?text=Ol%C3%A1%2C%20Gabriel%21%20Vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento." target="_blank" rel="noopener" aria-label="Chamar no WhatsApp"><i class="ph ph-whatsapp-logo" aria-hidden="true"></i></a>
 
-  <script>
-    /* Junta os campos do formulário numa mensagem e abre o WhatsApp.
-       Sem este script o formulário continua funcionando e envia só a descrição. */
-    document.querySelectorAll('.js-wa-form').forEach(function (f) {
-      f.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var linhas = ['Olá, Gabriel! Vim pelo site.'];
-        f.querySelectorAll('[data-campo]').forEach(function (c) {
-          var v = c.value.trim(); if (v) linhas.push(c.getAttribute('data-campo') + ': ' + v);
-        });
-        var a = document.createElement('a');
-        a.href = 'https://wa.me/5575999062183?text=' + encodeURIComponent(linhas.join('\n'));
-        a.target = '_blank'; a.rel = 'noopener';
-        document.body.appendChild(a); a.click(); a.remove();
-      });
-    });
-  </script>
 </body>
 </html>
