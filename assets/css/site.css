@@ -113,6 +113,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .nav__drop { position: relative; }
 .nav__droplabel .ph { font-size: 14px; transition: transform .2s; }
 .nav__sub {
+  transform-origin: 24px 0;
   position: absolute; top: calc(100% + 14px); left: -24px; width: 420px;
   background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow);
   padding: 10px; display: grid; gap: 2px;
@@ -202,7 +203,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 }
 .svc__link::before {
   content: ""; position: absolute; inset: 6px 0; border-radius: var(--radius); background: var(--navy);
-  transform: scaleY(.6); opacity: 0; z-index: -1; transition: transform .35s var(--ease), opacity .25s;
+  transform: scaleY(.6); opacity: 0; z-index: -1; transition: transform .25s var(--ease), opacity .2s;
 }
 .svc__icon {
   width: 58px; height: 58px; border-radius: 16px; display: grid; place-items: center; font-size: 30px;
@@ -331,7 +332,7 @@ a.channel:hover .channel__arr { transform: translate(3px, -3px); }
 .cta .btn--primary:hover { background: #ffecea; }
 
 /* ---------- Páginas de serviço ---------- */
-.prose { display: grid; gap: 56px; max-width: 980px; }
+.prose { display: grid; gap: 56px; }
 .prose__block { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 16px 48px; }
 .prose__block h2 { font-size: clamp(1.5rem, 2.6vw, 2rem); }
 .prose__block p { color: var(--muted); font-size: 1.08rem; }
@@ -409,7 +410,7 @@ a.channel:hover .channel__arr { transform: translate(3px, -3px); }
   .hero__grid, .hero__grid--page { grid-template-columns: 1fr; gap: 40px; }
   .hero__form { max-width: 620px; }
   .scope { max-width: 620px; }
-  .faq, .orc, .contact__grid { grid-template-columns: 1fr; gap: 36px; }
+  .faq, .orc, .contact__grid { grid-template-columns: minmax(0, 1fr); gap: 36px; }
   .faq__intro { position: static; }
   .steps { grid-template-columns: 1fr 1fr; }
   .step:nth-child(3) { padding-left: 0; border-left: 0; }
@@ -482,7 +483,6 @@ a.channel:hover .channel__arr { transform: translate(3px, -3px); }
 }
 
 .hero--page + .section { padding-top: 48px; }
-.prose { max-width: none; }
 
 .section--flush-top { padding-top: 0; }
 
@@ -667,3 +667,39 @@ a.review__src:hover .ph { transform: translate(2px, -2px); }
 .cookies__btns { display: flex; gap: 8px; }
 .footer__legal a[hidden] { display: none; }
 @media (max-width: 600px) { .cookies { left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); padding: 14px 16px; } .cookies__btns { width: 100%; } .cookies__btns .btn { flex: 1; } }
+
+/* =========================================================================
+   ACABAMENTO (revisão de interface)
+   ========================================================================= */
+p { text-wrap: pretty; }
+
+/* toque: tudo que é clicável "afunda" um pouco ao pressionar */
+.chip, .svc__link, a.channel, .other { transition-property: border-color, background-color, color, transform; }
+.svc__link { transition: transform .16s var(--ease); }
+.chip:active, .svc__link:active, a.channel:active, .other:active, .carousel__btn:active { transform: scale(.98); }
+.carousel__btn:active { transform: translateY(-50%) scale(.94); }
+
+/* no celular o "hover" fica preso depois do toque: desfaz os efeitos de movimento */
+@media (hover: none) {
+  .chip:hover { transform: none; }
+  .mq li:hover { transform: none; color: #b3bec7; }
+  .carousel__btn:hover { background: #fff; border-color: var(--line); color: var(--navy); }
+}
+
+/* dúvidas abrem deslizando (navegadores novos; nos outros abrem direto) */
+:root { interpolate-size: allow-keywords; }
+@media (prefers-reduced-motion: no-preference) {
+  .faq__item::details-content {
+    block-size: 0; overflow: clip;
+    transition: block-size .25s var(--ease), content-visibility .25s allow-discrete;
+  }
+  .faq__item[open]::details-content { block-size: auto; }
+
+  /* aviso de cookies entra subindo */
+  .cookies { transition: opacity .3s var(--ease), transform .3s var(--ease); }
+  @starting-style { .cookies { opacity: 0; transform: translateY(12px); } }
+}
+
+/* erro do formulário aparece embaixo do campo, só depois de a pessoa tentar enviar */
+.field__error { display: none; font-size: .88rem; color: var(--coral-ink); font-weight: 500; }
+.field textarea:user-invalid + .field__error { display: block; }

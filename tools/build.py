@@ -253,6 +253,16 @@ def cabecalho(R, ativo=""):
            ic_list=ic("list"), ic_x=ic("x"))
 
 
+EXEMPLOS = {
+    "Ar-condicionado": "Ex.: Ar-condicionado Samsung 12.000 BTUs pingando água no quarto.",
+    "Câmara fria": "Ex.: Câmara fria do mercado não passa de 5 °C e está formando gelo.",
+    "Geladeira ou freezer": "Ex.: Geladeira Brastemp frost free, o freezer gela mas embaixo não.",
+    "Máquina de lavar": "Ex.: Máquina Electrolux 12 kg não centrifuga e fica com água.",
+    "Fogão": "Ex.: Fogão Atlas 4 bocas, a boca da frente não acende.",
+    "Tomada, lustre ou parte elétrica": "Ex.: Instalar um lustre na sala e trocar duas tomadas.",
+}
+
+
 def formulario(form_id, marcado="Ar-condicionado", titulo="Descreva o problema", sub="", R=""):
     ops = "\n".join('                <option%s>%s</option>' % (" selected" if o == marcado else "", escape(o)) for o in OPCOES_FORM)
     return """
@@ -283,14 +293,16 @@ def formulario(form_id, marcado="Ar-condicionado", titulo="Descreva o problema",
           <div class="field">
             <label for="{fid}-problema">O que está acontecendo?</label>
             <textarea id="{fid}-problema" data-campo="Problema" name="text" rows="3" required minlength="8"
-              placeholder="Ex.: Ar-condicionado Samsung 12.000 BTUs pingando água no quarto."></textarea>
+              placeholder="{exemplo}"></textarea>
+            <p class="field__error">Conte em poucas palavras o que está acontecendo.</p>
           </div>
           <button class="btn btn--primary btn--lg form__submit" type="submit">{ic_send} Enviar pelo WhatsApp</button>
           <p class="form__note">Abre o WhatsApp com a mensagem pronta. Você confere antes de enviar.
             Nada fica salvo no site. <a href="{R}politica-de-privacidade/">Política de Privacidade</a></p>
         </form>""".format(fid=form_id, num=E["whatsapp"], ic_wa=ic("whatsapp-logo"), titulo=escape(titulo),
                           sub=('<p class="form__sub">%s</p>' % escape(sub)) if sub else "", ops=ops,
-                          ic_caret=ic("caret-down"), ic_send=ic("paper-plane-tilt"), R=R)
+                          ic_caret=ic("caret-down"), ic_send=ic("paper-plane-tilt"), R=R,
+                          exemplo=escape(EXEMPLOS.get(marcado, EXEMPLOS["Ar-condicionado"])))
 
 
 def faixa_marcas():
