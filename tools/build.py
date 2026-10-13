@@ -464,15 +464,15 @@ def contato(R):
     <section class="contact" id="contato" aria-labelledby="contato-t">
       <div class="wrap contact__grid">
         <div class="contact__copy reveal">
-          <p class="eyebrow eyebrow--light">Fale conosco</p>
+          <p class="eyebrow">Fale conosco</p>
           <h2 id="contato-t">Fale direto com quem faz o serviço.</h2>
           <p class="contact__lead">Quem responde e quem vai até você é o {resp}. Sem central de atendimento e sem intermediário.</p>
         </div>
         <ul class="channels reveal">
-          <li><a class="channel" {wa}>{ic_wa}<span><small>WhatsApp</small><strong>{tel_ex}</strong></span>{arr}</a></li>
-          <li><a class="channel" href="tel:{tel}">{ic_tel}<span><small>Ligar</small><strong>{tel_ex}</strong></span>{arr}</a></li>
-          <li><a class="channel" {insta}>{ic_insta}<span><small>Instagram</small><strong>{insta_u}</strong></span>{arr}</a></li>
-          <li><div class="channel channel--static">{ic_pin}<span><small>Área de atendimento</small><strong>{area}</strong></span></div></li>
+          <li><a class="channel channel--wa" {wa}>{ic_wa}<span><small>WhatsApp</small><strong>{tel_ex}</strong></span>{arr}</a></li>
+          <li><a class="channel channel--tel" href="tel:{tel}">{ic_tel}<span><small>Ligar</small><strong>{tel_ex}</strong></span>{arr}</a></li>
+          <li><a class="channel channel--ig" {insta}>{ic_insta}<span><small>Instagram</small><strong>{insta_u}</strong></span>{arr}</a></li>
+          <li><div class="channel channel--static channel--pin">{ic_pin}<span><small>Área de atendimento</small><strong>{area}</strong></span></div></li>
         </ul>
       </div>
     </section>""".format(resp=E["responsavel"], wa=ext(wa("Olá, Gabriel! Vim pelo site e gostaria de um orçamento.")),
@@ -489,7 +489,7 @@ def rodape(R):
   <footer class="footer">
     <div class="wrap footer__grid">
       <div class="footer__brand">
-        <img src="{R}assets/img/logo.png" alt="{nome}" width="806" height="200" loading="lazy" decoding="async">
+        <img src="{R}assets/img/logo-negativo.png" alt="{nome}" width="806" height="200" loading="lazy" decoding="async">
         <p>Refrigeração, eletrodomésticos e pequenos reparos em {cidade} - {uf}. Assistência técnica independente, todas as marcas.</p>
       </div>
       <nav class="footer__col" aria-label="Serviços">
@@ -614,11 +614,11 @@ def pagina_inicio():
           <p class="eyebrow">Como funciona</p>
           <h2 id="como-t">Do primeiro contato ao serviço feito</h2>
         </div>
-        <ol class="steps">
-          <li class="step reveal"><span class="step__n">1</span><h3>Você manda a mensagem</h3><p>Pelo WhatsApp ou pelo formulário. Uma foto ou vídeo do aparelho ajuda muito.</p></li>
-          <li class="step reveal"><span class="step__n">2</span><h3>Combinamos a visita</h3><p>Você escolhe o melhor horário e o técnico vai até a sua casa ou o seu comércio.</p></li>
-          <li class="step reveal"><span class="step__n">3</span><h3>Diagnóstico e orçamento</h3><p>O problema é avaliado no local e você recebe o valor antes do conserto.</p></li>
-          <li class="step reveal"><span class="step__n">4</span><h3>Serviço resolvido</h3><p>O conserto é feito e o aparelho é testado na sua frente.</p></li>
+        <ol class="flow">
+          <li class="flow__step"><span class="flow__dot">{ic_f1}</span><p class="flow__k">Passo 1</p><h3>Você manda a mensagem</h3><p>Pelo WhatsApp ou pelo formulário. Uma foto ou vídeo do aparelho ajuda muito.</p></li>
+          <li class="flow__step"><span class="flow__dot">{ic_f2}</span><p class="flow__k">Passo 2</p><h3>Combinamos a visita</h3><p>Você escolhe o melhor horário e o técnico vai até a sua casa ou o seu comércio.</p></li>
+          <li class="flow__step"><span class="flow__dot">{ic_f3}</span><p class="flow__k">Passo 3</p><h3>Diagnóstico e orçamento</h3><p>O problema é avaliado no local e você recebe o valor antes do conserto.</p></li>
+          <li class="flow__step"><span class="flow__dot">{ic_f4}</span><p class="flow__k">Passo 4</p><h3>Serviço resolvido</h3><p>O conserto é feito e o aparelho é testado na sua frente.</p></li>
         </ol>
       </div>
     </section>
@@ -630,7 +630,8 @@ def pagina_inicio():
            ic_wa=ic("whatsapp-logo"), form=formulario("f-inicio", R="", titulo="Peça seu orçamento",
                                                       sub="Preencha e envie pelo WhatsApp."),
            ondas=faixa_ondas(), servicos=servicos,
-           arr=ic("arrow-right"), depo=depoimentos(), marcas=faixa_marcas(), faq=faq_html(I["faq"], fundo="section--soft"), contato=contato(R))
+           arr=ic("arrow-right"), ic_f1=ic("chat-circle-text"), ic_f2=ic("calendar-check"),
+           ic_f3=ic("magnifying-glass"), ic_f4=ic("check-circle"), depo=depoimentos(), marcas=faixa_marcas(), faq=faq_html(I["faq"], fundo="section--soft"), contato=contato(R))
 
     html = head(I["title"], I["description"], "", R, [ld_empresa(), ld_faq(I["faq"])],
                 keywords="refrigeração Sertãozinho, ar-condicionado Sertãozinho, câmara fria Sertãozinho, "

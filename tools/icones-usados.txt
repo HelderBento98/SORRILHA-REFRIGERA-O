@@ -1,12 +1,15 @@
 arrow-left
 arrow-right
 arrow-up-right
+calendar-check
 caret-down
 caret-right
+chat-circle-text
 check
 check-circle
 instagram-logo
 list
+magnifying-glass
 map-pin
 oven
 paper-plane-tilt
