@@ -115,14 +115,11 @@ def inicio():
       <p class="hero__sub">%s</p>
       <div class="hero__acts">
         <a class="pill pill--wa" href="%s" target="_blank" rel="noopener">Pedir orçamento no WhatsApp<span class="pill__ico">%s</span></a>
-        <a class="link" href="tel:%s">ou ligue %s</a>
       </div>
-      <p class="hero__who"><img src="../assets/img/mark.png" alt="" width="36" height="36"> Atendimento feito pelo próprio Gabriel Sorrilha, em casas e comércios.</p>
     </div>
     %s
   </div>
-</section>""" % (escape(INICIO["h1"]), escape(INICIO["sub"]), WA_GERAL, ic("whatsapp-logo"),
-                  EMPRESA["telefone_link"], EMPRESA["telefone_exibicao"], painel())
+</section>""" % (escape(INICIO["h1"]), escape(INICIO["sub"]), WA_GERAL, ic("whatsapp-logo"), painel())
 
 
 def servicos():

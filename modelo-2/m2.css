@@ -88,8 +88,6 @@ a { color: inherit; }
 .hero h1 { font-size: clamp(2.5rem, 5vw, 4.3rem); color: var(--navy); }
 .hero__sub { margin-top: 24px; font-size: clamp(1.05rem, 1.6vw, 1.2rem); color: var(--muted); max-width: 48ch; }
 .hero__acts { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin-top: 32px; }
-.hero__who { display: flex; align-items: center; gap: 12px; margin-top: 36px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--muted); font-size: .95rem; max-width: 46ch; }
-.hero__who img { width: 36px; height: 36px; flex: none; }
 
 /* painel de temperatura: moldura dupla (casca clara + tela colorida) */
 .dial {
@@ -131,7 +129,6 @@ a { color: inherit; }
 
 @media (max-width: 900px) {
   .hero__grid { grid-template-columns: minmax(0, 1fr); }
-  .hero__who { display: none; }
   .hero__acts { margin-top: 26px; }
   .dial__screen { min-height: 0; }
   .dial__opts { flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: -2px; }
