@@ -34,7 +34,7 @@
       b.setAttribute('aria-selected', on); b.tabIndex = on ? 0 : -1;
       if (on && foco) b.focus();
     });
-    dial.style.setProperty('--cor', d.cor);
+    dial.style.setProperty('--cor', d.cor); dial.style.setProperty('--tx', d.tx);
     elLabel.textContent = d.nome; elUnit.textContent = d.u; elFrase.textContent = d.frase;
     elWa.href = d.wa; elWa.firstChild.textContent = 'Chamar sobre ' + d.nome.toLowerCase();
     elMore.href = d.href;

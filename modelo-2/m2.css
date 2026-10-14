@@ -6,6 +6,7 @@
 @font-face { font-family: "Outfit"; src: url("../assets/fonts/outfit-variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
 
 @property --cor { syntax: "<color>"; inherits: true; initial-value: #1d74a0; }
+@property --tx { syntax: "<color>"; inherits: true; initial-value: #fff; }
 
 :root {
   --ink: #102636;
@@ -55,7 +56,7 @@ a { color: inherit; }
 .pill--wa { background: var(--coral-ink); color: #fff; }
 .pill--wa .pill__ico { background: rgba(255,255,255,.16); }
 .pill--light { background: #fff; color: var(--ink); }
-.pill--light .pill__ico { background: var(--cor); color: #fff; }
+.pill--light .pill__ico { background: var(--cor); color: var(--tx); }
 @media (hover: hover) {
   .pill--wa:hover { background: var(--coral-ink-2); }
   .pill:hover .pill__ico { transform: translate(2px, -2px) scale(1.05); }
@@ -95,10 +96,10 @@ a { color: inherit; }
   padding: 8px; border-radius: 36px;
   background: color-mix(in srgb, var(--cor) 12%, #fff);
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--cor) 18%, transparent), 0 30px 60px -44px color-mix(in srgb, var(--cor) 55%, transparent);
-  transition: --cor .8s var(--ease);
+  transition: --cor .8s var(--ease), --tx .8s var(--ease);
 }
 .dial__screen {
-  position: relative; overflow: hidden; color: #fff; background: var(--cor);
+  position: relative; overflow: hidden; color: var(--tx); background: var(--cor);
   border-radius: 28px; padding: clamp(24px, 3.6vw, 40px) clamp(24px, 3.6vw, 40px) clamp(48px, 5vw, 60px);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.18);
   min-height: 25.5rem; display: flex; flex-direction: column;
@@ -107,16 +108,16 @@ a { color: inherit; }
 .dial__screen::after {
   content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 22px;
   background:
-    repeating-linear-gradient(90deg, rgba(255,255,255,.38) 0 1px, transparent 1px 60px) 0 100% / 100% 22px no-repeat,
-    repeating-linear-gradient(90deg, rgba(255,255,255,.22) 0 1px, transparent 1px 12px) 0 100% / 100% 10px no-repeat;
+    repeating-linear-gradient(90deg, color-mix(in srgb, currentColor 38%, transparent) 0 1px, transparent 1px 60px) 0 100% / 100% 22px no-repeat,
+    repeating-linear-gradient(90deg, color-mix(in srgb, currentColor 22%, transparent) 0 1px, transparent 1px 12px) 0 100% / 100% 10px no-repeat;
 }
 .dial__label { font-weight: 600; font-size: 1.05rem; opacity: .9; }
 .dial__read { display: flex; align-items: flex-start; font-family: var(--display); font-weight: 500; line-height: .9; margin: 14px 0 20px; font-variant-numeric: tabular-nums; }
 .dial__num { font-size: clamp(5.5rem, 12vw, 9.5rem); letter-spacing: -.05em; }
 .dial__unit { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 400; margin: .25em 0 0 .15em; opacity: .85; }
-.dial__frase { max-width: 40ch; font-size: 1.02rem; color: rgba(255,255,255,.92); min-height: 3.2em; }
+.dial__frase { max-width: 40ch; font-size: 1.02rem; opacity: .92; min-height: 3.2em; }
 .dial__acts { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin-top: auto; padding-top: 26px; }
-.dial__more { color: #fff; font-weight: 600; text-underline-offset: 4px; }
+.dial__more { color: inherit; font-weight: 600; text-underline-offset: 4px; }
 .dial__opts { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 2px 2px; }
 .dial__opt {
   padding: 10px 16px; border-radius: 999px; border: 0; cursor: pointer;
@@ -124,7 +125,7 @@ a { color: inherit; }
   transition: background-color .25s var(--ease), color .25s var(--ease), transform .16s var(--ease);
 }
 .dial__opt:active { transform: scale(.97); }
-.dial__opt[aria-selected="true"] { background: var(--cor); color: #fff; }
+.dial__opt[aria-selected="true"] { background: var(--cor); color: var(--tx); }
 @media (hover: hover) { .dial__opt:not([aria-selected="true"]):hover { background: color-mix(in srgb, var(--cor) 14%, #fff); } }
 .dial.is-ticking .dial__num { transition: none; }
 
@@ -155,19 +156,19 @@ a { color: inherit; }
 .svcs li:last-child .svc { border-bottom-color: transparent; }
 .svc__ico {
   display: grid; place-items: center; width: 64px; height: 64px; border-radius: 20px;
-  color: var(--cor); background: color-mix(in srgb, var(--cor) 11%, #fff);
+  color: var(--ink, var(--cor)); background: color-mix(in srgb, var(--cor) 14%, #fff);
   transition: background-color .3s var(--ease), color .3s var(--ease), transform .35s var(--ease);
 }
 .ico { width: 36px; height: 36px; overflow: visible; }
 .ico g, .ico path { transform-box: fill-box; }
 .svc__name { font-weight: 600; font-size: clamp(1.25rem, 2vw, 1.5rem); letter-spacing: -.02em; line-height: 1.15; color: var(--navy); }
 .svc__sum { color: var(--muted); }
-.svc__go { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; font-size: 1.25rem; color: var(--cor); box-shadow: inset 0 0 0 1px var(--line); transition: background-color .3s var(--ease), color .3s, transform .35s var(--ease), box-shadow .3s; }
+.svc__go { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; font-size: 1.25rem; color: var(--ink, var(--cor)); box-shadow: inset 0 0 0 1px var(--line); transition: background-color .3s var(--ease), color .3s, transform .35s var(--ease), box-shadow .3s; }
 .svc:active { transform: scale(.995); }
 @media (hover: hover) {
   .svc:hover { background: color-mix(in srgb, var(--cor) 7%, #fff); }
-  .svc:hover .svc__go { background: var(--cor); color: #fff; box-shadow: none; transform: translate(2px, -2px); }
-  .svc:hover .svc__ico { background: var(--cor); color: #fff; transform: rotate(-4deg); }
+  .svc:hover .svc__go { background: var(--cor); color: var(--tx, #fff); box-shadow: none; transform: translate(2px, -2px); }
+  .svc:hover .svc__ico { background: var(--cor); color: var(--tx, #fff); transform: rotate(-4deg); }
 }
 /* animação de cada ícone ao passar o mouse (ou focar com o teclado) */
 .ico-ar__air { transform-origin: top; }
