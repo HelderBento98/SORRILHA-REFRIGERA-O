@@ -139,32 +139,11 @@ def servicos():
 
 
 def avaliacoes():
-    if not DEPOIMENTOS:
-        return ""
-    itens = []
-    for i, d in enumerate(DEPOIMENTOS):
-        itens.append("""
-      <figure class="quote%s" data-i="%d"%s>
-        <blockquote>%s</blockquote>
-        <figcaption><strong>%s</strong> <span>%s no Google</span> <a href="%s" target="_blank" rel="noopener">ver avaliação</a></figcaption>
-      </figure>""" % (" is-on" if i == 0 else "", i, "" if i == 0 else ' aria-hidden="true"', escape(d["texto"]),
-                     escape(d["nome"]), escape(d["quando"]), escape(d["link"])))
-    perfil = ('<a class="link" href="%s" target="_blank" rel="noopener">Todas as avaliações no Google</a>' % escape(GOOGLE_PERFIL)) if GOOGLE_PERFIL else ""
-    return """
-<section class="sec sec--quotes" id="avaliacoes">
-  <div class="wrap quotes">
-    <p class="quotes__stars" aria-label="5 estrelas">★★★★★</p>
-    <h2 class="sr">Avaliações de clientes no Google</h2>
-    <div class="quotes__stage">%s
-    </div>
-    <div class="quotes__nav">
-      <button type="button" class="round" data-dir="-1" aria-label="Avaliação anterior">%s</button>
-      <p class="quotes__count"><span class="js-n">1</span> de %d avaliações, todas com 5 estrelas</p>
-      <button type="button" class="round" data-dir="1" aria-label="Próxima avaliação">%s</button>
-    </div>
-    %s
-  </div>
-</section>""" % ("".join(itens), ic("arrow-left"), len(DEPOIMENTOS), ic("arrow-right"), perfil)
+    # mesmo carrossel de cards do site atual (centralizado, em loop, setas e bordas transparentes)
+    from build import depoimentos
+    h = depoimentos()
+    h = h.replace('class="section section--soft"', 'class="sec sec--soft"').replace(" reveal", "")
+    return h
 
 
 CONVERSA = [
@@ -273,7 +252,7 @@ def pagina():
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#0f3550">
 <link rel="icon" href="../assets/img/favicon.png">
-<link rel="preload" href="fonts/shoulders.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/outfit-variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../assets/icons/icons.css">
 <link rel="stylesheet" href="m2.css">
 </head>

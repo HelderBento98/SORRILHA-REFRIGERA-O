@@ -1,6 +1,6 @@
 /* Sorrilha Refrigeração — Modelo 2
    1. Painel de temperatura (troca número, cor e textos conforme o aparelho)
-   2. Avaliações uma de cada vez
+   2. Avaliações: carrossel de cards (script junto da seção, igual ao site atual)
    3. Conversa de exemplo que aparece mensagem por mensagem
    4. Formulário que abre o WhatsApp */
 (function () {
@@ -52,18 +52,6 @@
   /* abertura: começa no calor de Sertãozinho e esfria até o ar-condicionado */
   var primeiro = opts[0].getAttribute('data-s');
   if (calmo) escolhe(primeiro); else setTimeout(function () { escolhe(primeiro); }, 900);
-
-  /* ---------- 2. Avaliações ---------- */
-  var quotes = Array.prototype.slice.call(document.querySelectorAll('.quote'));
-  var nEl = document.querySelector('.quotes .js-n'), qi = 0;
-  document.querySelectorAll('.quotes__nav .round').forEach(function (b) {
-    b.addEventListener('click', function () {
-      quotes[qi].classList.remove('is-on'); quotes[qi].setAttribute('aria-hidden', 'true');
-      qi = (qi + Number(b.getAttribute('data-dir')) + quotes.length) % quotes.length;
-      quotes[qi].classList.add('is-on'); quotes[qi].removeAttribute('aria-hidden');
-      nEl.textContent = qi + 1;
-    });
-  });
 
   /* ---------- 3. Conversa ---------- */
   var lista = document.querySelector('.phone__msgs');
