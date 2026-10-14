@@ -29,6 +29,8 @@ LEITURA = {
     "reparos-em-casa": (127, "V", "#2b3d4c", "Tomadas, interruptores, lustres e vazamentos. Serviço pequeno, feito com a energia desligada."),
 }
 
+ICONES = {'ar-condicionado': '<svg class="ico ico-ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v5a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-5a2 2 0 0 1 2 -2z"/><path d="M6 10h12"/><path d="M16.5 7h.01"/><g class="ico-ar__air"><path d="M7 16c0 1.4 1 2 1 3.5"/><path d="M12 16v4"/><path d="M17 16c0 1.4 -1 2 -1 3.5"/></g></svg>', 'camara-fria': '<svg class="ico ico-camara" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 21v-15a2 2 0 0 1 2 -2h11a2 2 0 0 1 2 2v15"/><path d="M3 21h18"/><path d="M16.5 11v3"/><g class="ico-camara__flake"><path d="M10.5 9v6"/><path d="M7.9 10.5l5.2 3"/><path d="M7.9 13.5l5.2 -3"/></g></svg>', 'geladeira-e-freezer': '<svg class="ico ico-fridge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2l0 -14"/><path d="M5 10h14"/><path class="ico-fridge__h" d="M9 6v1"/><path class="ico-fridge__h" d="M9 13v3"/></svg>', 'maquina-de-lavar': '<svg class="ico ico-wash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2l0 -14"/><path d="M8 6h.01"/><path d="M11 6h.01"/><path d="M14 6h2"/><g class="ico-wash__drum"><path d="M8 14a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"/><path d="M8 14c1.333 -.667 2.667 -.667 4 0c1.333 .667 2.667 .667 4 0"/></g></svg>', 'fogao': '<svg class="ico ico-fogao" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h16"/><path d="M5 9v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/><path d="M8.5 15h7v3h-7z"/><g class="ico-fogao__fl"><path d="M9 7c-1 0 -1.6 -.7 -1.6 -1.5c0 -1.1 1.6 -2.7 1.6 -2.7s1.6 1.6 1.6 2.7c0 .8 -.6 1.5 -1.6 1.5z"/></g><g class="ico-fogao__fl ico-fogao__fl--2"><path d="M15 7c-1 0 -1.6 -.7 -1.6 -1.5c0 -1.1 1.6 -2.7 1.6 -2.7s1.6 1.6 1.6 2.7c0 .8 -.6 1.5 -1.6 1.5z"/></g></svg>', 'reparos-em-casa': '<svg class="ico ico-casa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11l8.5 -7.5l8.5 7.5"/><path d="M5 9.8v10.7h14v-10.7"/><g class="ico-casa__gear"><circle cx="12" cy="14.9" r="3"/><circle cx="12" cy="14.9" r="1.1"/><path d="M14.77 16.05L15.97 16.55M13.15 17.67L13.65 18.87M10.85 17.67L10.35 18.87M9.23 16.05L8.03 16.55M9.23 13.75L8.03 13.25M10.85 12.13L10.35 10.93M13.15 12.13L13.65 10.93M14.77 13.75L15.97 13.25"/></g></svg>'}
+
 ABERTURA = (34, "°C", "#c93a33", "Tarde de verão em Sertãozinho")
 
 
@@ -120,11 +122,11 @@ def servicos():
         v, u, cor, _ = LEITURA[s["slug"]]
         linhas.append("""
       <li><a class="svc" href="../%s/" style="--cor:%s">
-        <span class="svc__read">%s<small>%s</small></span>
+        <span class="svc__ico">%s</span>
         <span class="svc__name">%s</span>
         <span class="svc__sum">%s</span>
         <span class="svc__go">%s</span>
-      </a></li>""" % (s["slug"], cor, num(v), u, escape(s["nome"]), escape(s["resumo"]), ic("arrow-up-right")))
+      </a></li>""" % (s["slug"], cor, ICONES[s["slug"]], escape(s["nome"]), escape(s["resumo"]), ic("arrow-up-right")))
     return """
 <section class="sec" id="servicos">
   <div class="wrap">
