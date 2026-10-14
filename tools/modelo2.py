@@ -138,7 +138,6 @@ def servicos():
   <div class="wrap">
     <div class="sec__head">
       <h2>Serviços</h2>
-      <p>Cada aparelho tem a sua página, com os defeitos mais comuns e o que fazer até o técnico chegar.</p>
     </div>
     <ul class="svcs">%s
     </ul>

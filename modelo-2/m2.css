@@ -83,7 +83,14 @@ a { color: inherit; }
 }
 
 /* ---------- abertura ---------- */
-.hero { padding-block: clamp(40px, 7vw, 88px) clamp(56px, 8vw, 104px); }
+/* fundo azul bem claro no topo, que se desfaz em branco até a seção de serviços.
+   A abertura sobe por baixo do menu (margem negativa) para o tom começar no topo da tela. */
+.hero {
+  --sob: 96px;
+  margin-top: calc(-1 * var(--sob));
+  padding-block: calc(var(--sob) + clamp(40px, 7vw, 88px)) clamp(72px, 10vw, 128px);
+  background: linear-gradient(180deg, #dfeaf2 0%, #e9f1f6 45%, #f5f9fb 75%, #fff 100%);
+}
 .hero__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(32px, 5vw, 72px); align-items: center; }
 .hero h1 { font-size: clamp(2.5rem, 5vw, 4.3rem); color: var(--navy); }
 .hero__sub { margin-top: 24px; font-size: clamp(1.05rem, 1.6vw, 1.2rem); color: var(--muted); max-width: 48ch; }
@@ -358,3 +365,6 @@ a.review__src .ph { transition: transform .25s var(--ease); }
   *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
   .js-chat .msg { opacity: 1; transform: none; }
 }
+
+/* serviços logo depois da abertura: o degradê já faz a separação */
+.hero + .sec { padding-top: clamp(16px, 3vw, 40px); }
